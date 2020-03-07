@@ -1,0 +1,797 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Spring,AOP,解决问题," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="上一篇文章是一年前。。武汉疫情，人生第一次在家“正式上班”。。。悠悠假期不写博客？这是一篇介绍方法的文章，为的是鼓励经常不自信的自己。我发现自己好像只要一段时间不解决问题，就似乎失去了能证明自己能力的依据，再加上健忘，解决过的难题过一段时间不接触就忘的差不多了，因此心里总是不踏实。这不是介绍Spring Aop的文章，但是经过前2天的学习研究，我也基本弄明白了，此刻的我，信心满满。我需要记录下我解">
+<meta name="keywords" content="Spring,AOP,解决问题">
+<meta property="og:type" content="article">
+<meta property="og:title" content="在绝望之谷研究Spring AOP顺序">
+<meta property="og:url" content="https://kenson321.github.io/2020/02/05/在绝望之谷研究SpringAOP顺序/index.html">
+<meta property="og:site_name" content="Kenson&#39;s Blog">
+<meta property="og:description" content="上一篇文章是一年前。。武汉疫情，人生第一次在家“正式上班”。。。悠悠假期不写博客？这是一篇介绍方法的文章，为的是鼓励经常不自信的自己。我发现自己好像只要一段时间不解决问题，就似乎失去了能证明自己能力的依据，再加上健忘，解决过的难题过一段时间不接触就忘的差不多了，因此心里总是不踏实。这不是介绍Spring Aop的文章，但是经过前2天的学习研究，我也基本弄明白了，此刻的我，信心满满。我需要记录下我解">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://kenson321.github.io/2020/02/05/在绝望之谷研究SpringAOP顺序/邓宁-克鲁格效应.jpeg">
+<meta property="og:image" content="https://kenson321.github.io/2020/02/05/在绝望之谷研究SpringAOP顺序/文档.png">
+<meta property="og:updated_time" content="2020-03-07T13:06:17.819Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="在绝望之谷研究Spring AOP顺序">
+<meta name="twitter:description" content="上一篇文章是一年前。。武汉疫情，人生第一次在家“正式上班”。。。悠悠假期不写博客？这是一篇介绍方法的文章，为的是鼓励经常不自信的自己。我发现自己好像只要一段时间不解决问题，就似乎失去了能证明自己能力的依据，再加上健忘，解决过的难题过一段时间不接触就忘的差不多了，因此心里总是不踏实。这不是介绍Spring Aop的文章，但是经过前2天的学习研究，我也基本弄明白了，此刻的我，信心满满。我需要记录下我解">
+<meta name="twitter:image" content="https://kenson321.github.io/2020/02/05/在绝望之谷研究SpringAOP顺序/邓宁-克鲁格效应.jpeg">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://kenson321.github.io/2020/02/05/在绝望之谷研究SpringAOP顺序/"/>
+
+
+
+
+
+  <title>在绝望之谷研究Spring AOP顺序 | Kenson's Blog</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Kenson's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://kenson321.github.io/2020/02/05/在绝望之谷研究SpringAOP顺序/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Kenson">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/luffy.JPG">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Kenson's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">在绝望之谷研究Spring AOP顺序</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-02-05T15:30:20+08:00">
+                2020-02-05
+              </time>
+            
+
+            
+              <span class="post-meta-divider">|</span>
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-check-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">更新于&#58;</span>
+              
+              <time title="更新于" itemprop="dateModified" datetime="2020-03-07T21:06:17+08:00">
+                2020-03-07
+              </time>
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/感悟/" itemprop="url" rel="index">
+                    <span itemprop="name">感悟</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/感悟/技术/" itemprop="url" rel="index">
+                    <span itemprop="name">技术</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>上一篇文章是一年前。。武汉疫情，人生第一次在家“正式上班”。。。悠悠假期不写博客？<br>这是一篇介绍方法的文章，为的是鼓励经常不自信的自己。我发现自己好像只要一段时间不解决问题，就似乎失去了能证明自己能力的依据，再加上健忘，解决过的难题过一段时间不接触就忘的差不多了，因此心里总是不踏实。<br>这不是介绍Spring Aop的文章，但是经过前2天的学习研究，我也基本弄明白了，此刻的我，信心满满。我需要记录下我解决问题的过程，为将来不自信的自己加油鼓劲~</p>
+<a id="more"></a>
+<h1 id="序"><a href="#序" class="headerlink" title="序"></a>序</h1><ol>
+<li>2018年下旬定下的3年目标中的一个是学框架，其实当时没想好怎么学，当时只是作为一个新手一下扎进java分布式系统开发的浪潮，所接所触皆是框架，一下子被框架这个词所倾倒。现在想来，Spring应该是java学习的首选框架，因为它已经是J2EE的事实标准。学了一段时间，应该写点东西作为阶段性总结和成果了。</li>
+<li>苏总说过，如果把一个人知道的东西比作是一个圆内的面积的话，随着这个圆越来越大，圆的周长也会越来越长，因此他知道圆外面自己不懂的东西也越来越多，因此也会越来越谦虚。后来看到邓宁-克鲁格效应，我知道自己在2018年翻过了愚昧山峰，因此才会定下3年计划。此刻，我正站在绝望之谷抬头仰望。在解决问题前我居然都感觉到了绝望，觉得坑太大，技术欠账太多，学无止境，不知道怎么才能解决这个问题。解决完后我又重拾自信，但是，问题是无穷无尽的，我不能一直这样过山车的心理状态。因此，我把这次解决问题的过程写下来，不管以后再遇到什么问题，我相信按着这个套路一定能解决的，不必慌张，不必害怕，我要为我爬上开悟之坡加油鼓劲。不打怪怎么升级呢？遇到的怪越多越好~~<br><img src="邓宁-克鲁格效应.jpeg" alt=""></li>
+<li>Spring AOP顺序是一个典型的spring的问题，可深可浅。定义了多个Spring的切面后，怎么控制顺序？Spring里面，定义切面的方法那么多，为什么有些方法可以有些不行？那么多属性，又各有什么含义？作为一个新手，怎么尽快解决这个问题？下面，我只回答最后一个问题，一个是我自己也没有完全掌握，另一个是我也不打算针对我遇到的问题（编程道路上的问题多如牛毛）都写一个博客，所以只讲思路和体会。</li>
+</ol>
+<h1 id="授人以渔"><a href="#授人以渔" class="headerlink" title="授人以渔"></a>授人以渔</h1><ol>
+<li><p>看书<br>看书的好处是系统的教你，坏处是厚厚的一本，只看书不一定能快速解决当前的问题。<br>顺便说一下，我看的是《Spring in action》，一开始觉得不习惯，感觉里面说的东西很多都一带而过，但是又很喜欢，因为里面把一些基础的思想、原理知识点都提到了。后来我明白了，因为Spring还有厚厚的用户指南，Spring是一个开源的不断变化的项目，这本书无法也没必要去覆盖这些细节。因此你还应该学会如下。</p>
+</li>
+<li><p>google<br>查<strong>官网资料</strong>，各种资料。这是看书的补充，好处是更详尽，坏处也是更慢，不可能通读。Sping就有很详细的用户手册，详细到一度让我望而生畏，望而却步。但是，接触多了之后，你就知道，这是理所当然的学习方式。<br>找<strong>别人的经验</strong>。好处是最快捷最直接，如果找到了那就解决问题了。坏处是得碰运气，各种试，而且如果别人没把原理说清楚，你也只是暂时解决了问题，没有根本解决问题。</p>
+</li>
+<li><p>放<strong>码</strong>过来<br>终于到了靠自己的时候了，能解决到什么程度，利用多少工具，就完全看个人修行啦。<br>（1）首先要有<strong>源码</strong>，这样才有分析的可能，不然就还是只能各种碰运气试，看日志猜。这也证明了开源的重要性，当然也可以反编译，只是有源码会更好一些。<br>（2）通过<strong>调试</strong>，跟踪的模式，把问题相对的聚焦到相关的源码上面。另外，log4j支持打印日志的同时，打印“输出这段日志的代码对应的源码”的具体位置，即程序名及对应代码所在的行数。这样就可以在相关的地方打断点，然后通过堆栈往上查找，看看相关的实现逻辑。另外，log4j或slf4j还支持桥接别的日志输出框架到自身，然后slf4j可以代理到别的日志输出框架（比如log4j），最后统一由logj4j控制debug级别输出。<br>（3）看代码的时候要做笔记，看源码时最好的辅助工具应该是画<strong>uml</strong>了。<br>（4）重现问题，或者做实验的最好方式，是写一个<strong>简化版的demo</strong>去试验，这样才能聚焦问题，避免被其它因素影响，才能最终从本质上理解。</p>
+</li>
+</ol>
+<blockquote>
+<p>对待框架的<strong>正确态度</strong>：<br>对于框架，即使是Spring这么优秀文档这么齐全，更别说平常工作中别人以方便使用的名义写的各种封装代码，只能说真是又爱又恨。恨的是因为框架做了各种封装，一定程度上阻碍了你认识事物的本质，让你从学习事物本质变为学习别人框架的使用。爱的是，其实你不能不爱，没有框架，你一个人根本做不过来。解决这之间的矛盾，方法只有一个，看源码，看别人写的代码。<strong><em>代码可以不是你写的，但只要有可能，就去看源码</em></strong>，这样遇到问题的时候你才可以靠自己。</p>
+</blockquote>
+<h1 id="实操"><a href="#实操" class="headerlink" title="实操"></a>实操</h1><h2 id="解决思路："><a href="#解决思路：" class="headerlink" title="解决思路："></a>解决思路：</h2><p>看书和google没什么好说的，做就是了。<br>分享一个找到的相关网页：<a href="https://segmentfault.com/q/1010000011275341" target="_blank" rel="noopener">薛定饿</a>，里面的评论激励了我要靠自己。<br>显示一段资料，这里说明怎么在“代理对象”内获取“自己”，而不是获取“被代理的对象”，这样才可以重新进入“代理对象”，触发“代理对象”的其它通知（拦截方法）。<br><img src="文档.png" alt=""></p>
+<p>如下是靠自己的过程：<br>首先是简化版的demo，就是建一个项目，写一段Spring启动加载xml的代码，然后把要试验的aop的处理写上去。<br>然后是把jar包都关联源代码。<br>之后是修改log4j的日志级别和打印输出日志所在的源码位置，打断点调试。</p>
+<h2 id="调试分析"><a href="#调试分析" class="headerlink" title="调试分析"></a>调试分析</h2><p>直接给结论了，首先如下是我调试的堆栈和找到的关键代码行，需要的话可以直接参考去打断点。由此可以看出Spring Aop 的处理顺序控制的逻辑大概是：获取Ioc容器里面的一个bean的时候，会同时搜出对应这个bean的所有代理，然后对代理做一个排序，排序是用AspectJ自己的方法进行的，大致是根据类上面的Order注解或者类实现Order接口后返回的数字作一个排序，另外也看同一个Order大小下，声明的前后顺序排序。具体还是看代码比较好，不同版本不确定是否有差异，正如哪位大神说的“废话少说，放码过来”。</p>
+<h3 id="创建切面"><a href="#创建切面" class="headerlink" title="创建切面"></a>创建切面</h3><h4 id="找到创建切面的地方"><a href="#找到创建切面的地方" class="headerlink" title="找到创建切面的地方"></a>找到创建切面的地方</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">Thread [main] (Suspended (breakpoint at line 127 in CglibAopProxy))	</span><br><span class="line">	owns: ProxyFactory  (id=43)	</span><br><span class="line">	owns: ConcurrentHashMap&lt;K,V&gt;  (id=44)	</span><br><span class="line">	owns: Object  (id=23)	</span><br><span class="line">	ObjenesisCglibAopProxy(CglibAopProxy).&lt;init&gt;(AdvisedSupport) line: 127	</span><br><span class="line">	ObjenesisCglibAopProxy.&lt;init&gt;(AdvisedSupport) line: 48	</span><br><span class="line">	DefaultAopProxyFactory.createAopProxy(AdvisedSupport) line: 60	</span><br><span class="line">	ProxyFactory(ProxyCreatorSupport).createAopProxy() line: 105</span><br><span class="line">	ProxyFactory.getProxy(ClassLoader) line: 109	</span><br><span class="line">	AnnotationAwareAspectJAutoProxyCreator(AbstractAutoProxyCreator).createProxy(Class&lt;?&gt;, String, Object[], TargetSource) line: 469	</span><br><span class="line">	AnnotationAwareAspectJAutoProxyCreator(AbstractAutoProxyCreator).wrapIfNecessary(Object, String, Object) line: 349	</span><br><span class="line">	AnnotationAwareAspectJAutoProxyCreator(AbstractAutoProxyCreator).postProcessAfterInitialization(Object, String) line: 298	</span><br><span class="line">	DefaultListableBeanFactory(AbstractAutowireCapableBeanFactory).applyBeanPostProcessorsAfterInitialization(Object, String) line: 423	</span><br><span class="line">	DefaultListableBeanFactory(AbstractAutowireCapableBeanFactory).initializeBean(String, Object, RootBeanDefinition) line: 1633	</span><br><span class="line">	DefaultListableBeanFactory(AbstractAutowireCapableBeanFactory).doCreateBean(String, RootBeanDefinition, Object[]) line: 555	</span><br><span class="line">	DefaultListableBeanFactory(AbstractAutowireCapableBeanFactory).createBean(String, RootBeanDefinition, Object[]) line: 483	</span><br><span class="line">	AbstractBeanFactory$1.getObject() line: 306	</span><br><span class="line">	DefaultListableBeanFactory(DefaultSingletonBeanRegistry).getSingleton(String, ObjectFactory&lt;?&gt;) line: 230	</span><br><span class="line">	DefaultListableBeanFactory(AbstractBeanFactory).doGetBean(String, Class&lt;T&gt;, Object[], boolean) line: 302	</span><br><span class="line">	DefaultListableBeanFactory(AbstractBeanFactory).getBean(String) line: 197	</span><br><span class="line">	DefaultListableBeanFactory.preInstantiateSingletons() line: 761	</span><br><span class="line">	ClassPathXmlApplicationContext(AbstractApplicationContext).finishBeanFactoryInitialization(ConfigurableListableBeanFactory) line: 867	</span><br><span class="line">	ClassPathXmlApplicationContext(AbstractApplicationContext).refresh() line: 543	</span><br><span class="line">	ClassPathXmlApplicationContext.&lt;init&gt;(String[], boolean, ApplicationContext) line: 139	</span><br><span class="line">	ClassPathXmlApplicationContext.&lt;init&gt;(String) line: 83	</span><br><span class="line">	TestAop.main(String[]) line: 10</span><br></pre></td></tr></table></figure>
+<p>从这里找到入口，创建aop切面代理：<br>ProxyFactory(ProxyCreatorSupport).createAopProxy() line: 105<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ProxyCreatorSupport</span> <span class="keyword">extends</span> <span class="title">AdvisedSupport</span> </span>&#123;</span><br><span class="line">	<span class="function"><span class="keyword">protected</span> <span class="keyword">final</span> <span class="keyword">synchronized</span> AopProxy <span class="title">createAopProxy</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		<span class="keyword">if</span> (!<span class="keyword">this</span>.active) &#123;</span><br><span class="line">			activate();</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">return</span> getAopProxyFactory().createAopProxy(<span class="keyword">this</span>);</span><br><span class="line">	&#125;</span><br></pre></td></tr></table></figure></p>
+<p>沿着调用堆栈往上一边看代码一边找，createProxy方法：<br>AnnotationAwareAspectJAutoProxyCreator(AbstractAutoProxyCreator).createProxy(Class&lt;?&gt;, String, Object[], TargetSource) line: 469<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="class"><span class="keyword">class</span> <span class="title">AbstractAutoProxyCreator</span> <span class="keyword">extends</span> <span class="title">ProxyProcessorSupport</span></span></span><br><span class="line"><span class="class">		<span class="keyword">implements</span> <span class="title">SmartInstantiationAwareBeanPostProcessor</span>, <span class="title">BeanFactoryAware</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">		Advisor[] advisors = buildAdvisors(beanName, specificInterceptors);</span><br><span class="line">		<span class="keyword">for</span> (Advisor advisor : advisors) &#123;</span><br><span class="line">			proxyFactory.addAdvisor(advisor);</span><br><span class="line">		&#125;</span><br><span class="line"></span><br><span class="line">		proxyFactory.setTargetSource(targetSource);</span><br><span class="line">		customizeProxyFactory(proxyFactory);</span><br><span class="line"></span><br><span class="line">		proxyFactory.setFrozen(<span class="keyword">this</span>.freezeProxy);</span><br><span class="line">		<span class="keyword">if</span> (advisorsPreFiltered()) &#123;</span><br><span class="line">			proxyFactory.setPreFiltered(<span class="keyword">true</span>);</span><br><span class="line">		&#125;</span><br><span class="line"></span><br><span class="line">		<span class="keyword">return</span> proxyFactory.getProxy(getProxyClassLoader());</span><br></pre></td></tr></table></figure></p>
+<p>继续往上，可以看到获取所有切面的地方：<br>AnnotationAwareAspectJAutoProxyCreator(AbstractAutoProxyCreator).wrapIfNecessary(Object, String, Object) line: 349<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="class"><span class="keyword">class</span> <span class="title">AbstractAutoProxyCreator</span> <span class="keyword">extends</span> <span class="title">ProxyProcessorSupport</span></span></span><br><span class="line"><span class="class">		<span class="keyword">implements</span> <span class="title">SmartInstantiationAwareBeanPostProcessor</span>, <span class="title">BeanFactoryAware</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">		<span class="comment">// Create proxy if we have advice.</span></span><br><span class="line">		Object[] specificInterceptors = getAdvicesAndAdvisorsForBean(bean.getClass(), beanName, <span class="keyword">null</span>);</span><br><span class="line">		<span class="keyword">if</span> (specificInterceptors != DO_NOT_PROXY) &#123;</span><br><span class="line">			<span class="keyword">this</span>.advisedBeans.put(cacheKey, Boolean.TRUE);</span><br><span class="line">			Object proxy = createProxy(</span><br><span class="line">					bean.getClass(), beanName, specificInterceptors, <span class="keyword">new</span> SingletonTargetSource(bean));</span><br></pre></td></tr></table></figure></p>
+<h4 id="找到对切面排序的地方"><a href="#找到对切面排序的地方" class="headerlink" title="找到对切面排序的地方"></a>找到对切面排序的地方</h4><p>findEligibleAdvisors、sortAdvisors<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="class"><span class="keyword">class</span> <span class="title">AbstractAdvisorAutoProxyCreator</span> <span class="keyword">extends</span> <span class="title">AbstractAutoProxyCreator</span> </span>&#123;</span><br><span class="line">	<span class="meta">@Override</span></span><br><span class="line">	<span class="keyword">protected</span> Object[] getAdvicesAndAdvisorsForBean(Class&lt;?&gt; beanClass, String beanName, TargetSource targetSource) &#123;</span><br><span class="line">		List&lt;Advisor&gt; advisors = findEligibleAdvisors(beanClass, beanName);</span><br><span class="line">		<span class="keyword">if</span> (advisors.isEmpty()) &#123;</span><br><span class="line">			<span class="keyword">return</span> DO_NOT_PROXY;</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">return</span> advisors.toArray();</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">protected</span> List&lt;Advisor&gt; <span class="title">findEligibleAdvisors</span><span class="params">(Class&lt;?&gt; beanClass, String beanName)</span> </span>&#123;</span><br><span class="line">		List&lt;Advisor&gt; candidateAdvisors = findCandidateAdvisors();</span><br><span class="line">		List&lt;Advisor&gt; eligibleAdvisors = findAdvisorsThatCanApply(candidateAdvisors, beanClass, beanName);</span><br><span class="line">		extendAdvisors(eligibleAdvisors);</span><br><span class="line">		<span class="keyword">if</span> (!eligibleAdvisors.isEmpty()) &#123;</span><br><span class="line">			eligibleAdvisors = sortAdvisors(eligibleAdvisors);</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">return</span> eligibleAdvisors;</span><br><span class="line">	&#125;</span><br></pre></td></tr></table></figure></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">AspectJAwareAdvisorAutoProxyCreator</span> <span class="keyword">extends</span> <span class="title">AbstractAdvisorAutoProxyCreator</span> </span>&#123;</span><br><span class="line">	<span class="function"><span class="keyword">protected</span> List&lt;Advisor&gt; <span class="title">sortAdvisors</span><span class="params">(List&lt;Advisor&gt; advisors)</span> </span>&#123;</span><br><span class="line">		List&lt;PartiallyComparableAdvisorHolder&gt; partiallyComparableAdvisors =</span><br><span class="line">				<span class="keyword">new</span> ArrayList&lt;PartiallyComparableAdvisorHolder&gt;(advisors.size());</span><br><span class="line">		<span class="keyword">for</span> (Advisor element : advisors) &#123;</span><br><span class="line">			partiallyComparableAdvisors.add(</span><br><span class="line">					<span class="keyword">new</span> PartiallyComparableAdvisorHolder(element, DEFAULT_PRECEDENCE_COMPARATOR));</span><br><span class="line">		&#125;</span><br><span class="line">		List&lt;PartiallyComparableAdvisorHolder&gt; sorted =</span><br><span class="line">				PartialOrder.sort(partiallyComparableAdvisors);</span><br><span class="line">		<span class="keyword">if</span> (sorted != <span class="keyword">null</span>) &#123;</span><br></pre></td></tr></table></figure>
+<h4 id="找到排序的依据"><a href="#找到排序的依据" class="headerlink" title="找到排序的依据"></a>找到排序的依据</h4><p>最后一行的sorted变量<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">[ExposeInvocationInterceptor: order -2147483647, , </span><br><span class="line">AspectJAroundAdvice: order -1000, aspect4, declaration order 0, </span><br><span class="line">AspectJAroundAdvice: order 1, aspect2, declaration order 0, </span><br><span class="line">AspectJAroundAdvice: order 2, aspect3, declaration order 0, </span><br><span class="line">AspectJAroundAdvice: order 3, aspect1, declaration order 0]</span><br></pre></td></tr></table></figure></p>
+<h3 id="函数调用"><a href="#函数调用" class="headerlink" title="函数调用"></a>函数调用</h3><h4 id="找到当前适用的aop切面列表"><a href="#找到当前适用的aop切面列表" class="headerlink" title="找到当前适用的aop切面列表"></a>找到当前适用的aop切面列表</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">Thread [main] (Suspended (breakpoint at line 13 in Aspect4))	</span><br><span class="line">	Aspect4.around(ProceedingJoinPoint) line: 13	</span><br><span class="line">	NativeMethodAccessorImpl.invoke0(Method, Object, Object[]) line: not available [native method]	</span><br><span class="line">	NativeMethodAccessorImpl.invoke(Object, Object[]) line: not available	</span><br><span class="line">	DelegatingMethodAccessorImpl.invoke(Object, Object[]) line: not available	</span><br><span class="line">	Method.invoke(Object, Object...) line: not available	</span><br><span class="line">	AspectJAroundAdvice(AbstractAspectJAdvice).invokeAdviceMethodWithGivenArgs(Object[]) line: 629	</span><br><span class="line">	AspectJAroundAdvice(AbstractAspectJAdvice).invokeAdviceMethod(JoinPoint, JoinPointMatch, Object, Throwable) line: 618	</span><br><span class="line">	AspectJAroundAdvice.invoke(MethodInvocation) line: 70	</span><br><span class="line">	CglibAopProxy$CglibMethodInvocation(ReflectiveMethodInvocation).proceed() line: 179	</span><br><span class="line">	ExposeInvocationInterceptor.invoke(MethodInvocation) line: 92	</span><br><span class="line">	CglibAopProxy$CglibMethodInvocation(ReflectiveMethodInvocation).proceed() line: 179	</span><br><span class="line">	CglibAopProxy$DynamicAdvisedInterceptor.intercept(Object, Method, Object[], MethodProxy) line: 673	</span><br><span class="line">	ExampleRun$$EnhancerBySpringCGLIB$$88fa362e.run() line: not available	</span><br><span class="line">	TestAop.main(String[]) line: 13</span><br></pre></td></tr></table></figure>
+<p>CglibAopProxy$DynamicAdvisedInterceptor.intercept(Object, Method, Object[], MethodProxy) line: 673<br>advised变量：<code>this.advised = config;</code><br>根据advised变量逐个切面进行调用：<code>chain = this.advised</code>，<code>chain, methodProxy).proceed();</code><br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">CglibAopProxy</span> <span class="keyword">implements</span> <span class="title">AopProxy</span>, <span class="title">Serializable</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="title">CglibAopProxy</span><span class="params">(AdvisedSupport config)</span> <span class="keyword">throws</span> AopConfigException </span>&#123;</span><br><span class="line">		Assert.notNull(config, <span class="string">"AdvisedSupport must not be null"</span>);</span><br><span class="line">		<span class="keyword">if</span> (config.getAdvisors().length == <span class="number">0</span> &amp;&amp; config.getTargetSource() == AdvisedSupport.EMPTY_TARGET_SOURCE) &#123;</span><br><span class="line">			<span class="keyword">throw</span> <span class="keyword">new</span> AopConfigException(<span class="string">"No advisors and no TargetSource specified"</span>);</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">this</span>.advised = config;</span><br><span class="line">		<span class="keyword">this</span>.advisedDispatcher = <span class="keyword">new</span> AdvisedDispatcher(<span class="keyword">this</span>.advised);</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">List&lt;Object&gt; chain = <span class="keyword">this</span>.advised.getInterceptorsAndDynamicInterceptionAdvice(method, targetClass);</span><br><span class="line"></span><br><span class="line">				<span class="keyword">else</span> &#123;</span><br><span class="line">					<span class="comment">// We need to create a method invocation...</span></span><br><span class="line">					retVal = <span class="keyword">new</span> CglibMethodInvocation(proxy, target, method, args, targetClass, chain, methodProxy).proceed();</span><br></pre></td></tr></table></figure></p>
+<h4 id="显示排序结果"><a href="#显示排序结果" class="headerlink" title="显示排序结果"></a>显示排序结果</h4><p>advised变量：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">org.springframework.aop.framework.ProxyFactory:</span><br><span class="line"> 0 interfaces []; 5 advisors [</span><br><span class="line"> org.springframework.aop.interceptor.ExposeInvocationInterceptor.ADVISOR, </span><br><span class="line"> </span><br><span class="line"> InstantiationModelAwarePointcutAdvisor: expression [execution(* testAop.ExampleRun.*(..))];</span><br><span class="line"> advice method [public java.lang.Object testAop.Aspect4.around(org.aspectj.lang.ProceedingJoinPoint) throws java.lang.Throwable];</span><br><span class="line"> perClauseKind=SINGLETON, </span><br><span class="line"> </span><br><span class="line"> InstantiationModelAwarePointcutAdvisor: expression [execution(* testAop.ExampleRun.*(..))];</span><br><span class="line"> advice method [public java.lang.Object testAop.Aspect3.around(org.aspectj.lang.ProceedingJoinPoint) throws java.lang.Throwable];</span><br><span class="line"> perClauseKind=SINGLETON, </span><br><span class="line"> </span><br><span class="line"> InstantiationModelAwarePointcutAdvisor: expression [execution(* testAop.ExampleRun.*(..))];</span><br><span class="line"> advice method [public java.lang.Object testAop.Aspect1.around(org.aspectj.lang.ProceedingJoinPoint) throws java.lang.Throwable];</span><br><span class="line"> perClauseKind=SINGLETON, </span><br><span class="line"> </span><br><span class="line"> InstantiationModelAwarePointcutAdvisor: expression [execution(* testAop.ExampleRun.*(..))];</span><br><span class="line"> advice method [public java.lang.Object testAop.Aspect2.around(org.aspectj.lang.ProceedingJoinPoint) throws java.lang.Throwable];</span><br><span class="line"> perClauseKind=SINGLETON</span><br><span class="line">];</span><br><span class="line"> targetSource [SingletonTargetSource for target object [testAop.ExampleRun@e53b70]];</span><br><span class="line"> proxyTargetClass=true;</span><br><span class="line"> optimize=false;</span><br><span class="line"> opaque=false;</span><br><span class="line"> exposeProxy=true;</span><br><span class="line"> frozen=false</span><br></pre></td></tr></table></figure></p>
+<h3 id="逐个切面调用"><a href="#逐个切面调用" class="headerlink" title="逐个切面调用"></a>逐个切面调用</h3><p>切面的调用不是一个套一个递归调用，而是在一个列表里面循环调用：<code>this.interceptorsAndDynamicMethodMatchers.get(++this.currentInterceptorIndex);</code><br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ReflectiveMethodInvocation</span> <span class="keyword">implements</span> <span class="title">ProxyMethodInvocation</span>, <span class="title">Cloneable</span> </span>&#123;</span><br><span class="line">	<span class="meta">@Override</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> Object <span class="title">proceed</span><span class="params">()</span> <span class="keyword">throws</span> Throwable </span>&#123;</span><br><span class="line">		<span class="comment">//	We start with an index of -1 and increment early.</span></span><br><span class="line">		<span class="keyword">if</span> (<span class="keyword">this</span>.currentInterceptorIndex == <span class="keyword">this</span>.interceptorsAndDynamicMethodMatchers.size() - <span class="number">1</span>) &#123;</span><br><span class="line">			<span class="keyword">return</span> invokeJoinpoint();</span><br><span class="line">		&#125;</span><br><span class="line"></span><br><span class="line">		Object interceptorOrInterceptionAdvice =</span><br><span class="line">				<span class="keyword">this</span>.interceptorsAndDynamicMethodMatchers.get(++<span class="keyword">this</span>.currentInterceptorIndex);</span><br></pre></td></tr></table></figure></p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Spring/" rel="tag"># Spring</a>
+          
+            <a href="/tags/AOP/" rel="tag"># AOP</a>
+          
+            <a href="/tags/解决问题/" rel="tag"># 解决问题</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/04/13/6日5晚仙本娜/" rel="next" title="Semporna">
+                <i class="fa fa-chevron-left"></i> Semporna
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/uploads/luffy.JPG"
+                alt="Kenson" />
+            
+              <p class="site-author-name" itemprop="name">Kenson</p>
+              <p class="site-description motion-element" itemprop="description">灾难总是接踵而至，这正是世间的常理。你以为只要解释一下，就有谁会来救你吗？要是死了，就只能说明我不过是如此程度的男人。——OnePiece-索隆</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">7</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">10</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">14</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#序"><span class="nav-number">1.</span> <span class="nav-text">序</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#授人以渔"><span class="nav-number">2.</span> <span class="nav-text">授人以渔</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#实操"><span class="nav-number">3.</span> <span class="nav-text">实操</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#解决思路："><span class="nav-number">3.1.</span> <span class="nav-text">解决思路：</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#调试分析"><span class="nav-number">3.2.</span> <span class="nav-text">调试分析</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#创建切面"><span class="nav-number">3.2.1.</span> <span class="nav-text">创建切面</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#找到创建切面的地方"><span class="nav-number">3.2.1.1.</span> <span class="nav-text">找到创建切面的地方</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#找到对切面排序的地方"><span class="nav-number">3.2.1.2.</span> <span class="nav-text">找到对切面排序的地方</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#找到排序的依据"><span class="nav-number">3.2.1.3.</span> <span class="nav-text">找到排序的依据</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#函数调用"><span class="nav-number">3.2.2.</span> <span class="nav-text">函数调用</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#找到当前适用的aop切面列表"><span class="nav-number">3.2.2.1.</span> <span class="nav-text">找到当前适用的aop切面列表</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#显示排序结果"><span class="nav-number">3.2.2.2.</span> <span class="nav-text">显示排序结果</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#逐个切面调用"><span class="nav-number">3.2.3.</span> <span class="nav-text">逐个切面调用</span></a></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2018 &mdash; <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Kenson</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Muse</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
