@@ -87,7 +87,7 @@
 <meta property="og:site_name" content="Kenson&#39;s Blog">
 <meta property="og:description" content="在绝望之谷攀爬有一段时间了，最近再次遇到一开始感觉一筹莫展的技术难题，想把这次的解题过程记下来，希望能形成套路，增强日后不断打怪的自信。">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2022-08-07T12:03:57.516Z">
+<meta property="og:updated_time" content="2022-08-07T13:06:32.418Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="鹰啄十式">
 <meta name="twitter:description" content="在绝望之谷攀爬有一段时间了，最近再次遇到一开始感觉一筹莫展的技术难题，想把这次的解题过程记下来，希望能形成套路，增强日后不断打怪的自信。">
@@ -308,7 +308,7 @@
               
                 <span class="post-meta-item-text">更新于&#58;</span>
               
-              <time title="更新于" itemprop="dateModified" datetime="2022-08-07T20:03:57+08:00">
+              <time title="更新于" itemprop="dateModified" datetime="2022-08-07T21:06:32+08:00">
                 2022-08-07
               </time>
             
@@ -378,96 +378,20 @@
         <p>在绝望之谷攀爬有一段时间了，最近再次遇到一开始感觉一筹莫展的技术难题，想把这次的解题过程记下来，希望能形成套路，增强日后不断打怪的自信。<br><a id="more"></a></p>
 <h1 id="缘起"><a href="#缘起" class="headerlink" title="缘起"></a>缘起</h1><p>  很多书和文章都提到成就别人等于成就自己，年过35，要再往上突破，不能再自己单打独斗了，毕竟即使仅仅考虑现实，现实就是身体和精力都支撑不了一直做单挑王。</p>
 <p>  很喜欢《输赢》，主人公周锐带给我一个很深刻的认识，就是，做一个培养大将的人比自己一直做一名大将更有成效，更有影响力，更有前景，也更适合不再年轻的自己。周锐创建了摧龙六式作为营销的套路，我也依葫芦画瓢，弄一个鹰啄十式，专门用于分析问题，特别是一些第一眼看上去一头雾水找不着北的问题，这类问题很容易令人（我自己）恐慌，因为不了解根本判断不出水的深浅，因为没有经验没有头绪也就没有底气不确定自己是否能解决，这时候就缺乏自信。但是每次用这十式解决问题后，我都会获得成就感，因此希望能通过总结套路，培养自信，勇敢的面对后续遇到的“未知”难题。</p>
-<p>  又是两年没写博客，希望这次捡起来不要再丢了，很多文章都提到，写博客是一条路。</p>
-<h1 id="鹰啄十式"><a href="#鹰啄十式" class="headerlink" title="鹰啄十式"></a>鹰啄十式</h1><p>  以下就是我对各个模式的说明，我觉得，也希望，一个表格足矣。</p>
-<h2 id="干货"><a href="#干货" class="headerlink" title="干货"></a><strong>干货</strong></h2><table>    <tr>        <td width="10%">设计模式</td><td width="20%">场景理解（面向对象）</td><td width="20%">本质（一句话）</td><td>详解</td>    </tr>    <tr>        <td>State<br>状态</td><td>青蛙王子</td><td>多态</td><td>其本质就是多态，强调的是面向接口编程过程中，同一接口（生物）下，不同的实现类（王子或青蛙）之间可以随意转换（王子变青蛙，青蛙变王子）</td>    </tr>    <tr>        <td>Strategy<br>策略</td><td>问：你有什么应对策略？答：兵来将挡，水来土掩</td><td>面对不同情况（上下文）选择（条件）不同应对策略（多态对象）</td><td>本质是多态，强调的是把选择不同的算法（单一行为）变为选择不同的多态对象</td>    </tr>    <tr>        <td>Visitor<br>访问者</td><td>青蛙王子接受不同题材的记者访问，各个记者都是见人说人话，见鬼说鬼话</td><td>两个多态类互相作为对方的参数</td><td>接口A的方法a接受接口B，并在a内以自己this作为参数调用B的方法b，b支持针对A的多态子类进行重载，从而实现A子类个数XB子类个数的排列组合处理</td>    </tr>    <tr>        <td>Builder<br>生成器</td><td>青蛙/王子 说学逗唱 讲一段相声</td><td>多态对象用各自的方法按同一个剧本完成同一件事</td><td>生成器模式属于创建型模式，但创建并不一定限于创建对象，还可以是创建（完成）一件事情，那么就是给定一个相声的剧本，只能用说相声的四种方式说学逗唱，让王子与青蛙各自表演一次。所以其本质还是多态，强调的是在处理过程中（多种行为），把不同表现结果的选择变为选择不同的多态对象</td>    </tr>    <tr>        <td>Template Mathod<br>模板方法</td><td>请假条模板</td><td>类继承</td><td>其本质就是类继承，强调的是像请教条模板一样，让父类实现不变的模板内容，让子类实现可变的请假原因及时间等</td>    </tr>    <tr>        <td>Creation Method<br>创建方法</td><td>–</td><td>特指创建对象的方法</td><td>《重构与模式》中为了澄清Factory Method而增加的模式，强调的是方法</td>    </tr>    <tr>        <td>Factory<br>工厂</td><td>生产产品的工厂</td><td>专门用于创建对象的类</td><td>强调的是类</td>    </tr>    <tr>        <td>Factory Method<br>工厂方法</td><td>–</td><td>模板类下的多态的创建对象方法</td><td>非工厂类下的创建对象的方法，强调的是模板模式下，子类特有的方法是用于创建对象</td>    </tr>    <tr>        <td>Abstract Factory<br>抽象工厂</td><td>–</td><td>多态工厂创建多态实例</td><td>通过替换同一接口A下的工厂实例达到替换其生成的同一接口B的不同产品实例，强调的是在工厂+多态</td>    </tr>    <tr>        <td>Command<br>命令</td><td>命令，不是告诉你什么，而是告诉你做什么</td><td>回调，传递“方法”而不是“参数”</td><td>作为参数的对象不包含数据，只包含行为，让被调用方回调</td>    </tr>    <tr>        <td>Observer<br>观察者</td><td>观察关注点，订阅消息</td><td>订阅变化，等待被回调通知</td><td>被观察者维护一个观察者的列表（通过注册登记进来），当有变化时则逐个通知</td>    </tr>    <tr>        <td>Facade<br>门面</td><td>前台接待员可以作为一个公司的门面</td><td>封装多个类以进行简化</td><td>提供简单的统一入口，封装各种复杂的实现</td>    </tr>    <tr>        <td>Adapter<br>适配器</td><td>电源适配器</td><td>封装单个类以便能被面向接口编程时调用</td><td>封装不可修改的类去适配另一个接口，使其能以该接口的形式被调用</td>    </tr>    <tr>        <td>Proxy<br>代理</td><td>代理人，秘书代理经理处理事务</td><td>封装单个类以使面向接口编程调用时进行修改</td><td>对某一个类的调用，变为对另一个实现相同接口的类的调用，使其能做一些附加功能</td>    </tr>    <tr>        <td>Composed Method<br>组合方法</td><td>组合多个小方法以实现一个大方法</td><td>分而治之，自顶向下</td><td>提炼函数，形成树状方法调用的层次结构</td>    </tr>    <tr>        <td>Composite<br>组成</td><td>团队精神</td><td>遍历树或链表等数据结构的所有节点</td><td>整体（团队）由局部（组员）以一定的结构（团队组织形式）组成（树或链），运行整体的方法（团队行为），所有局部（组员）都要参与。通过遍历树或链表等数据结构，调用所有节点的方法</td>    </tr>    <tr>        <td>Chain of Responsibility<br>职责链</td><td>职能部门踢皮球，一个传一个</td><td>遍历链表直到找到正确的节点</td><td>实现相同接口的对象递归包含组成一个链，逐个依次被调用，直到应该进行实际处理的节点（职责所在）被调用为止</td>    </tr>    <tr>        <td>Decorator<br>装饰</td><td>化妆+美颜，说你漂亮一个装饰功能都不能缺</td><td>遍历可动态增加节点的链表的所有节点</td><td>共同接口的对象通过不断嵌套（称为装饰，实质为封装）形成一个职责链，强调可动态增加功能（装饰）</td>    </tr>    <tr>        <td>FlyWeight<br>享元</td><td>英文直译：减少重量（对象的数量）</td><td>把对象内的数据存放在外部</td><td>把对象内的基本类型数据抽取到外部存入数组中，不需要增加对象数量即可保存多个对象的内容。</td>    </tr>    <tr>        <td>Singleton<br>单例</td><td>单一一个实例</td><td>有且只有一个静态实例</td><td>属于编程技巧</td>    </tr>    <tr>        <td>Bridge<br>桥接</td><td>桥</td><td>面向接口编程为两端的不同实现搭起了一个桥梁</td><td>删除log4j1（实现型的jar），更换为log4j-over-slf4j桥梁（适配slf4j到log4j1的接口作为log4j1新的实现），slf4j作为门面，log4j-slf4j-impl（适配log4j2到slf4j的接口的实现）</td>    </tr></table>
-
-<!-- table>
-    <tr>
-        <td width="10%">设计模式</td><td width="20%">场景理解（面向对象）</td><td width="20%">本质（一句话）</td><td>详解</td>
-    </tr>
-    <tr>
-        <td>State<br>状态</td><td>青蛙王子</td><td>多态</td><td>其本质就是多态，强调的是面向接口编程过程中，同一接口（生物）下，不同的实现类（王子或青蛙）之间可以随意转换（王子变青蛙，青蛙变王子）</td>
-    </tr>
-    <tr>
-        <td>Strategy<br>策略</td><td>问：你有什么应对策略？答：兵来将挡，水来土掩</td><td>面对不同情况（上下文）选择（条件）不同应对策略（多态对象）</td><td>本质是多态，强调的是把选择不同的算法（单一行为）变为选择不同的多态对象</td>
-    </tr>
-    <tr>
-        <td>Visitor<br>访问者</td><td>青蛙王子接受不同题材的记者访问，各个记者都是见人说人话，见鬼说鬼话</td><td>两个多态类互相作为对方的参数</td><td>接口A的方法a接受接口B，并在a内以自己this作为参数调用B的方法b，b支持针对A的多态子类进行重载，从而实现A子类个数XB子类个数的排列组合处理</td>
-    </tr>
-    <tr>
-        <td>Builder<br>生成器</td><td>青蛙/王子 说学逗唱 讲一段相声</td><td>多态对象用各自的方法按同一个剧本完成同一件事</td><td>生成器模式属于创建型模式，但创建并不一定限于创建对象，还可以是创建（完成）一件事情，那么就是给定一个相声的剧本，只能用说相声的四种方式说学逗唱，让王子与青蛙各自表演一次。所以其本质还是多态，强调的是在处理过程中（多种行为），把不同表现结果的选择变为选择不同的多态对象</td>
-    </tr>
-    <tr>
-        <td>Template Mathod<br>模板方法</td><td>请假条模板</td><td>类继承</td><td>其本质就是类继承，强调的是像请教条模板一样，让父类实现不变的模板内容，让子类实现可变的请假原因及时间等</td>
-    </tr>
-    <tr>
-        <td>Creation Method<br>创建方法</td><td>--</td><td>特指创建对象的方法</td><td>《重构与模式》中为了澄清Factory Method而增加的模式，强调的是方法</td>
-    </tr>
-    <tr>
-        <td>Factory<br>工厂</td><td>生产产品的工厂</td><td>专门用于创建对象的类</td><td>强调的是类</td>
-    </tr>
-    <tr>
-        <td>Factory Method<br>工厂方法</td><td>--</td><td>模板类下的多态的创建对象方法</td><td>非工厂类下的创建对象的方法，强调的是模板模式下，子类特有的方法是用于创建对象</td>
-    </tr>
-    <tr>
-        <td>Abstract Factory<br>抽象工厂</td><td>--</td><td>多态工厂创建多态实例</td><td>通过替换同一接口A下的工厂实例达到替换其生成的同一接口B的不同产品实例，强调的是在工厂+多态</td>
-    </tr>
-    <tr>
-        <td>Command<br>命令</td><td>命令，不是告诉你什么，而是告诉你做什么</td><td>回调，传递“方法”而不是“参数”</td><td>作为参数的对象不包含数据，只包含行为，让被调用方回调</td>
-    </tr>
-    <tr>
-        <td>Observer<br>观察者</td><td>观察关注点，订阅消息</td><td>订阅变化，等待被回调通知</td><td>被观察者维护一个观察者的列表（通过注册登记进来），当有变化时则逐个通知</td>
-    </tr>
-    <tr>
-        <td>Facade<br>门面</td><td>前台接待员可以作为一个公司的门面</td><td>封装多个类以进行简化</td><td>提供简单的统一入口，封装各种复杂的实现</td>
-    </tr>
-    <tr>
-        <td>Adapter<br>适配器</td><td>电源适配器</td><td>封装单个类以便能被面向接口编程时调用</td><td>封装不可修改的类去适配另一个接口，使其能以该接口的形式被调用</td>
-    </tr>
-    <tr>
-        <td>Proxy<br>代理</td><td>代理人，秘书代理经理处理事务</td><td>封装单个类以使面向接口编程调用时进行修改</td><td>对某一个类的调用，变为对另一个实现相同接口的类的调用，使其能做一些附加功能</td>
-    </tr>
-    <tr>
-        <td>Composed Method<br>组合方法</td><td>组合多个小方法以实现一个大方法</td><td>分而治之，自顶向下</td><td>提炼函数，形成树状方法调用的层次结构</td>
-    </tr>
-    <tr>
-        <td>Composite<br>组成</td><td>团队精神</td><td>遍历树或链表等数据结构的所有节点</td><td>整体（团队）由局部（组员）以一定的结构（团队组织形式）组成（树或链），运行整体的方法（团队行为），所有局部（组员）都要参与。通过遍历树或链表等数据结构，调用所有节点的方法</td>
-    </tr>
-    <tr>
-        <td>Chain of Responsibility<br>职责链</td><td>职能部门踢皮球，一个传一个</td><td>遍历链表直到找到正确的节点</td><td>实现相同接口的对象递归包含组成一个链，逐个依次被调用，直到应该进行实际处理的节点（职责所在）被调用为止</td>
-    </tr>
-    <tr>
-        <td>Decorator<br>装饰</td><td>化妆+美颜，说你漂亮一个装饰功能都不能缺</td><td>遍历可动态增加节点的链表的所有节点</td><td>共同接口的对象通过不断嵌套（称为装饰，实质为封装）形成一个职责链，强调可动态增加功能（装饰）</td>
-    </tr>
-    <tr>
-        <td>FlyWeight<br>享元</td><td>英文直译：减少重量（对象的数量）</td><td>把对象内的数据存放在外部</td><td>把对象内的基本类型数据抽取到外部存入数组中，不需要增加对象数量即可保存多个对象的内容。</td>
-    </tr>
-    <tr>
-        <td>Singleton<br>单例</td><td>单一一个实例</td><td>有且只有一个静态实例</td><td>属于编程技巧</td>
-    </tr>
-    <tr>
-        <td>Bridge<br>桥接</td><td>桥</td><td>面向接口编程为两端的不同实现搭起了一个桥梁</td><td>删除log4j1（实现型的jar），更换为log4j-over-slf4j桥梁（适配slf4j到log4j1的接口作为log4j1新的实现），slf4j作为门面，log4j-slf4j-impl（适配log4j2到slf4j的接口的实现）</td>
-    </tr>
-    <tr>
-        <td>Interpreter<br>解释器</td><td></td><td></td><td></td>
-    </tr>
-    <tr>
-        <td>Iterator<br>迭代器</td><td></td><td></td><td></td>
-    </tr>
-    <tr>
-        <td>Mediator<br>中介者</td><td></td><td></td><td></td>
-    </tr>
-    <tr>
-        <td>Memento<br>备忘录</td><td></td><td></td><td></td>
-    </tr>
-    <tr>
-        <td>Prototype<br>原型</td><td></td><td></td><td></td>
-    </tr>
-</table -->
-<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>  看完上面的表格，我觉得对于java来说，设计模式大部分就是围绕：<strong>类、继承、多态、重载、面向接口编程、封装、抽象泛化</strong>这些基本的面向对象理念的使用方法所做的经验总结而已。因此我才说，其实没什么眼前一亮的东西，但确实是经验总结出来的宝贵设计原则，使用的好，能令代码变得优雅。</p>
-<p>  也就能明白了，为什么有些设计模式平常提的那么少，说的最多的好象一直是工厂模式，好像你就只懂工厂模式。其实是因为大部分大家都一直在用，不是你不会，而是根本没什么好值得说的。<br>  当然也有例外，像访问者模式、用职责链代替ifelse等一些“技巧”，如果不说可能确实不会一下子想得到，但是，像这些技巧到底有多重要是值得讨论的，反正很多人不会也就这么过来了，会了也很少想用的。<br>  每个模式除了本质之外，很多细节都可以变化，排列组合就千变万化了，甚至有些使用场景的不同就能导致从一个模式变为另一个模式。所以记住这些细枝末节根本就是浪费精力和时间，理解核心思想，你也能做到千变万化，根本不需要别人代劳，甚至被迷惑误导。<br>  如果继续扩展延伸，有人也会把很多编程技巧进一步提升为“模式”，比如懒加载、空对象等等，那可更加说不清道不完了。</p>
-<p>  因此我更坚信，归根结底，还是《重构与模式》一直强调的三点：<strong>去除重复代码、简化逻辑、说明意图</strong>，才是编码设计的核心。如果必须补充的话，那就是<strong>灵活性、解耦</strong></p>
+<p>  又是两年没写博客，两年发生了很多事，转型做区块链，还有小鱼儿，希望这次捡起来不要再丢了，很多文章都提到，写博客是一条路。</p>
+<h1 id="鹰啄十式"><a href="#鹰啄十式" class="headerlink" title="鹰啄十式"></a>鹰啄十式</h1><ol>
+<li><em>理性认识</em> 了解问题的背景，相关概念</li>
+<li><em>感性认识</em> 接触出现问题的环境，进行尝试性操作</li>
+<li><em>重现</em> 掌握可以重现问题的操作步骤</li>
+<li><em>解决方案</em> 思考、搜索、研究可能的解决方案，有时候要停下来思考，尽量多列几个plan A、plan B</li>
+<li><em>尝试</em> 对于不熟悉的问题，除非看代码研究透了，否则就是各种试，通过重现验证以求试出答案</li>
+<li><em>搭环境</em> 在出问题的环境解决不了，就搭建一个私有环境，通过搭环境了解起源，从头到尾实现一次有助于掌握整个环境，同时熟悉并验证与问题相关的各个组件，做到对整体了然于心</li>
+<li><em>二分法验证</em> 逐个功能分解、验证，分而治之，逐步求精，缩小怀疑范围（也属于排除时的策略）</li>
+<li><em>枚举法尝试</em> 暴力尝试，逐个验证，特别适用于没有成功例子可以参考的情况下，碰运气（尝试就属于该技术）</li>
+<li><em>对比法排除</em> 有成功的例子可以参考对比，则对比差异，对差异逐个验证，暴力排除（也属于尝试时的依据）</li>
+<li><em>简化法聚焦</em> 精简验证的内容，排除复杂的干扰因素（搭环境就属于该技术，搭一个简化聚焦的环境）</li>
+</ol>
+<h2 id="补充"><a href="#补充" class="headerlink" title="补充"></a>补充</h2><p>  有时候，跟踪调试程序时，一步步跟踪深入可以了解执行的过程，但是对于比较隐蔽的问题，往往需要直接找到或猜测关键语句，直接在关键语句打断点通过堆栈发过来了解是怎么跑到该地方的。</p>
 
       
     </div>
@@ -642,7 +566,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#缘起"><span class="nav-number">1.</span> <span class="nav-text">缘起</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#鹰啄十式"><span class="nav-number">2.</span> <span class="nav-text">鹰啄十式</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#干货"><span class="nav-number">2.1.</span> <span class="nav-text">干货</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#总结"><span class="nav-number">2.2.</span> <span class="nav-text">总结</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#缘起"><span class="nav-number">1.</span> <span class="nav-text">缘起</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#鹰啄十式"><span class="nav-number">2.</span> <span class="nav-text">鹰啄十式</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#补充"><span class="nav-number">2.1.</span> <span class="nav-text">补充</span></a></li></ol></li></ol></div>
             
 
           </div>
