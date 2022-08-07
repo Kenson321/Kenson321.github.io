@@ -79,18 +79,18 @@
 
 
 
-<meta name="description" content="在绝望之谷攀爬有一段时间了，最近再次遇到类似的技术难题，想把这次的解题过程记下来，希望能形成讨论，增强日后不断打怪的自信">
+<meta name="description" content="在绝望之谷攀爬有一段时间了，最近再次遇到一开始感觉一筹莫展的技术难题，想把这次的解题过程记下来，希望能形成套路，增强日后不断打怪的自信。">
 <meta name="keywords" content="debug">
 <meta property="og:type" content="article">
 <meta property="og:title" content="鹰啄十式">
 <meta property="og:url" content="https://kenson321.github.io/2022/08/07/鹰啄十式/index.html">
 <meta property="og:site_name" content="Kenson&#39;s Blog">
-<meta property="og:description" content="在绝望之谷攀爬有一段时间了，最近再次遇到类似的技术难题，想把这次的解题过程记下来，希望能形成讨论，增强日后不断打怪的自信">
+<meta property="og:description" content="在绝望之谷攀爬有一段时间了，最近再次遇到一开始感觉一筹莫展的技术难题，想把这次的解题过程记下来，希望能形成套路，增强日后不断打怪的自信。">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2022-08-07T08:46:25.675Z">
+<meta property="og:updated_time" content="2022-08-07T12:03:57.516Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="鹰啄十式">
-<meta name="twitter:description" content="在绝望之谷攀爬有一段时间了，最近再次遇到类似的技术难题，想把这次的解题过程记下来，希望能形成讨论，增强日后不断打怪的自信">
+<meta name="twitter:description" content="在绝望之谷攀爬有一段时间了，最近再次遇到一开始感觉一筹莫展的技术难题，想把这次的解题过程记下来，希望能形成套路，增强日后不断打怪的自信。">
 
 
 
@@ -308,7 +308,7 @@
               
                 <span class="post-meta-item-text">更新于&#58;</span>
               
-              <time title="更新于" itemprop="dateModified" datetime="2022-08-07T16:46:25+08:00">
+              <time title="更新于" itemprop="dateModified" datetime="2022-08-07T20:03:57+08:00">
                 2022-08-07
               </time>
             
@@ -375,15 +375,11 @@
       
 
       
-        <p>在绝望之谷攀爬有一段时间了，最近再次遇到类似的技术难题，想把这次的解题过程记下来，希望能形成讨论，增强日后不断打怪的自信<br><a id="more"></a></p>
-<h1 id="重构“对设计模式的认识”"><a href="#重构“对设计模式的认识”" class="headerlink" title="重构“对设计模式的认识”"></a>重构“对设计模式的认识”</h1><h2 id="缘起"><a href="#缘起" class="headerlink" title="缘起"></a>缘起</h2><p>  不知为何，我一直都对“设计模式”很抗拒。可能是，一开始不懂，然后又思想守旧不想学，初看《设计模式》的时候，觉得书写的稍微有些复杂，没心思看；之后一直没学也没觉得有什么问题，再后来看到一些文章吐槽一个hello world程序被设计模式折腾后变成一大坨代码（简单说就是过度设计），于是就没再想过去学了。再后来被新同事劳模写的代码所震撼，我分不清这些到底是因为学习了设计模式，还是因为学习了《effective java》，后来苏总又批评我写的代码差，脆弱的自尊心受到打击，于是迁怒到“设计模式”本身，总想推翻“设计模式”的光环。</p>
-<p>  偶然一个机会，当我问heqc有没有学设计模式，他说没有，然后随口说了句“重构啊”，他也不解释，我也不以为意。再后来，看到一些文章，极力推荐<strong>《设计模式》、《重构》、《重构与模式》</strong>，怀着对设计模式的敌意和一探究竟的心情，直接选了《重构与模式》来看，之后可以用一见钟情来形容。本着对《重构与模式》里面每一句话的深深认同，当它写到<strong>“如果不研究模式，你就是主动地将许多重要且优美的设计思想拒于千里之外”</strong>时，我无言以对。<br>  同时，脆弱的自尊心迫使我另辟蹊径，选择了《Thinking in java》里面多次提到的作者另一本没出版的书<strong>《Thinking in Pattern》</strong>进行参考，了解大概。相比较而言，《设计模式》是不是太理论了不够接地气？《head first 设计模式》是不是又太罗嗦了有作秀之嫌？罗列一大堆“现象”反而让人看不清“本质”。而对于新手来说，我只希望能尽快用起来，让我多年的码农经验能够对标上这些术语。</p>
-<p>  我选择这个博客的标题，也是出于我对“重构”一词的热爱，希望对“初学者应该如何学习设计模式”做一次重构。</p>
-<h2 id="被人言过其实"><a href="#被人言过其实" class="headerlink" title="被人言过其实"></a>被人言过其实</h2><p>  请允许我以吐槽的口吻写，不针对DP本身，只针对那些痴迷DP的人，那些理论家，那些拿DP显摆的人。学习设计模式的必要性，远不像我看到的那些遇到解决不了的问题就捧着《设计模式》像捧着葵花宝典一样的人给我的错觉那样，就好像他们学了之后能把本来做不到的事情做到似的。</p>
-<p>  按《重构与模式》说的，《设计模式》写的时候java还没发展到现在这么高级，所以当时主要写给c语言的人看的？这么多个模式，只有几个是我觉得确实是需要技巧的，能令我眼前一亮，其余大部分都是能无师自通的。<br>  反而是《重构与模式》一直强调的三点：<strong>去除重复代码、简化逻辑、说明意图</strong>，才是编码设计的核心。我们可以实现某个设计模式，或者仅仅趋向那个设计模式，甚至可以去除不使用模式，衡量做法对错的唯一标准，或者目的，始终应该仅仅是为了<strong>去除重复的代码、简化代码逻辑、说明代码处理的意图</strong>。<br>  这也说明了为什么设计模式会有那么多争议，为什么有个大厂的程序员得到最优秀代码编写奖而他居然说自己不怎么会设计模式，但是会组织好每一句代码并写明白其用途。</p>
-<h2 id="为什么要学"><a href="#为什么要学" class="headerlink" title="为什么要学"></a>为什么要学</h2><p>  我简单归纳设计模式的作用：</p>
-<p>1、为了看起来很专业。让不懂得设计模式的人觉得你很牛。<br>2、为了与看起来很专业的人交流。或者说就是懂得“行话”，就比如股神说平仓、做空这些术语时，外行人听了后只会继续云里雾里和更加膜拜。<br>3、为了毕业文凭。好比正规军与游击队，没上过课的游击队也很有可能打败正规军，但正规军始终是有理论基础的职业选手。设计模式就是理论，多年码农的经验就是实践。<br>4、为了能优雅的顺手拈来。实践上升到理论，形成套路，以后再遇到类似问题，就可以不假思索，甚至举一反三。这其实就是设计模式最初提出来时的定义：“每一个模式描述了一个在我们周围不断重复发生的问题，以及该问题的解决方案的核心。这样，你就能一次又一次的使用该方案而不必做重复劳动。”。因此，设计模式就是对某些经常出现的问题的通用解决方案的抽象，它就是编程的套路。</p>
-<h1 id="重构“对设计模式的学习”"><a href="#重构“对设计模式的学习”" class="headerlink" title="重构“对设计模式的学习”"></a>重构“对设计模式的学习”</h1><p>  以下就是我对各个模式的说明，我觉得，也希望，一个表格足矣。</p>
+        <p>在绝望之谷攀爬有一段时间了，最近再次遇到一开始感觉一筹莫展的技术难题，想把这次的解题过程记下来，希望能形成套路，增强日后不断打怪的自信。<br><a id="more"></a></p>
+<h1 id="缘起"><a href="#缘起" class="headerlink" title="缘起"></a>缘起</h1><p>  很多书和文章都提到成就别人等于成就自己，年过35，要再往上突破，不能再自己单打独斗了，毕竟即使仅仅考虑现实，现实就是身体和精力都支撑不了一直做单挑王。</p>
+<p>  很喜欢《输赢》，主人公周锐带给我一个很深刻的认识，就是，做一个培养大将的人比自己一直做一名大将更有成效，更有影响力，更有前景，也更适合不再年轻的自己。周锐创建了摧龙六式作为营销的套路，我也依葫芦画瓢，弄一个鹰啄十式，专门用于分析问题，特别是一些第一眼看上去一头雾水找不着北的问题，这类问题很容易令人（我自己）恐慌，因为不了解根本判断不出水的深浅，因为没有经验没有头绪也就没有底气不确定自己是否能解决，这时候就缺乏自信。但是每次用这十式解决问题后，我都会获得成就感，因此希望能通过总结套路，培养自信，勇敢的面对后续遇到的“未知”难题。</p>
+<p>  又是两年没写博客，希望这次捡起来不要再丢了，很多文章都提到，写博客是一条路。</p>
+<h1 id="鹰啄十式"><a href="#鹰啄十式" class="headerlink" title="鹰啄十式"></a>鹰啄十式</h1><p>  以下就是我对各个模式的说明，我觉得，也希望，一个表格足矣。</p>
 <h2 id="干货"><a href="#干货" class="headerlink" title="干货"></a><strong>干货</strong></h2><table>    <tr>        <td width="10%">设计模式</td><td width="20%">场景理解（面向对象）</td><td width="20%">本质（一句话）</td><td>详解</td>    </tr>    <tr>        <td>State<br>状态</td><td>青蛙王子</td><td>多态</td><td>其本质就是多态，强调的是面向接口编程过程中，同一接口（生物）下，不同的实现类（王子或青蛙）之间可以随意转换（王子变青蛙，青蛙变王子）</td>    </tr>    <tr>        <td>Strategy<br>策略</td><td>问：你有什么应对策略？答：兵来将挡，水来土掩</td><td>面对不同情况（上下文）选择（条件）不同应对策略（多态对象）</td><td>本质是多态，强调的是把选择不同的算法（单一行为）变为选择不同的多态对象</td>    </tr>    <tr>        <td>Visitor<br>访问者</td><td>青蛙王子接受不同题材的记者访问，各个记者都是见人说人话，见鬼说鬼话</td><td>两个多态类互相作为对方的参数</td><td>接口A的方法a接受接口B，并在a内以自己this作为参数调用B的方法b，b支持针对A的多态子类进行重载，从而实现A子类个数XB子类个数的排列组合处理</td>    </tr>    <tr>        <td>Builder<br>生成器</td><td>青蛙/王子 说学逗唱 讲一段相声</td><td>多态对象用各自的方法按同一个剧本完成同一件事</td><td>生成器模式属于创建型模式，但创建并不一定限于创建对象，还可以是创建（完成）一件事情，那么就是给定一个相声的剧本，只能用说相声的四种方式说学逗唱，让王子与青蛙各自表演一次。所以其本质还是多态，强调的是在处理过程中（多种行为），把不同表现结果的选择变为选择不同的多态对象</td>    </tr>    <tr>        <td>Template Mathod<br>模板方法</td><td>请假条模板</td><td>类继承</td><td>其本质就是类继承，强调的是像请教条模板一样，让父类实现不变的模板内容，让子类实现可变的请假原因及时间等</td>    </tr>    <tr>        <td>Creation Method<br>创建方法</td><td>–</td><td>特指创建对象的方法</td><td>《重构与模式》中为了澄清Factory Method而增加的模式，强调的是方法</td>    </tr>    <tr>        <td>Factory<br>工厂</td><td>生产产品的工厂</td><td>专门用于创建对象的类</td><td>强调的是类</td>    </tr>    <tr>        <td>Factory Method<br>工厂方法</td><td>–</td><td>模板类下的多态的创建对象方法</td><td>非工厂类下的创建对象的方法，强调的是模板模式下，子类特有的方法是用于创建对象</td>    </tr>    <tr>        <td>Abstract Factory<br>抽象工厂</td><td>–</td><td>多态工厂创建多态实例</td><td>通过替换同一接口A下的工厂实例达到替换其生成的同一接口B的不同产品实例，强调的是在工厂+多态</td>    </tr>    <tr>        <td>Command<br>命令</td><td>命令，不是告诉你什么，而是告诉你做什么</td><td>回调，传递“方法”而不是“参数”</td><td>作为参数的对象不包含数据，只包含行为，让被调用方回调</td>    </tr>    <tr>        <td>Observer<br>观察者</td><td>观察关注点，订阅消息</td><td>订阅变化，等待被回调通知</td><td>被观察者维护一个观察者的列表（通过注册登记进来），当有变化时则逐个通知</td>    </tr>    <tr>        <td>Facade<br>门面</td><td>前台接待员可以作为一个公司的门面</td><td>封装多个类以进行简化</td><td>提供简单的统一入口，封装各种复杂的实现</td>    </tr>    <tr>        <td>Adapter<br>适配器</td><td>电源适配器</td><td>封装单个类以便能被面向接口编程时调用</td><td>封装不可修改的类去适配另一个接口，使其能以该接口的形式被调用</td>    </tr>    <tr>        <td>Proxy<br>代理</td><td>代理人，秘书代理经理处理事务</td><td>封装单个类以使面向接口编程调用时进行修改</td><td>对某一个类的调用，变为对另一个实现相同接口的类的调用，使其能做一些附加功能</td>    </tr>    <tr>        <td>Composed Method<br>组合方法</td><td>组合多个小方法以实现一个大方法</td><td>分而治之，自顶向下</td><td>提炼函数，形成树状方法调用的层次结构</td>    </tr>    <tr>        <td>Composite<br>组成</td><td>团队精神</td><td>遍历树或链表等数据结构的所有节点</td><td>整体（团队）由局部（组员）以一定的结构（团队组织形式）组成（树或链），运行整体的方法（团队行为），所有局部（组员）都要参与。通过遍历树或链表等数据结构，调用所有节点的方法</td>    </tr>    <tr>        <td>Chain of Responsibility<br>职责链</td><td>职能部门踢皮球，一个传一个</td><td>遍历链表直到找到正确的节点</td><td>实现相同接口的对象递归包含组成一个链，逐个依次被调用，直到应该进行实际处理的节点（职责所在）被调用为止</td>    </tr>    <tr>        <td>Decorator<br>装饰</td><td>化妆+美颜，说你漂亮一个装饰功能都不能缺</td><td>遍历可动态增加节点的链表的所有节点</td><td>共同接口的对象通过不断嵌套（称为装饰，实质为封装）形成一个职责链，强调可动态增加功能（装饰）</td>    </tr>    <tr>        <td>FlyWeight<br>享元</td><td>英文直译：减少重量（对象的数量）</td><td>把对象内的数据存放在外部</td><td>把对象内的基本类型数据抽取到外部存入数组中，不需要增加对象数量即可保存多个对象的内容。</td>    </tr>    <tr>        <td>Singleton<br>单例</td><td>单一一个实例</td><td>有且只有一个静态实例</td><td>属于编程技巧</td>    </tr>    <tr>        <td>Bridge<br>桥接</td><td>桥</td><td>面向接口编程为两端的不同实现搭起了一个桥梁</td><td>删除log4j1（实现型的jar），更换为log4j-over-slf4j桥梁（适配slf4j到log4j1的接口作为log4j1新的实现），slf4j作为门面，log4j-slf4j-impl（适配log4j2到slf4j的接口的实现）</td>    </tr></table>
 
 <!-- table>
@@ -646,7 +642,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#重构“对设计模式的认识”"><span class="nav-number">1.</span> <span class="nav-text">重构“对设计模式的认识”</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#缘起"><span class="nav-number">1.1.</span> <span class="nav-text">缘起</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#被人言过其实"><span class="nav-number">1.2.</span> <span class="nav-text">被人言过其实</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#为什么要学"><span class="nav-number">1.3.</span> <span class="nav-text">为什么要学</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#重构“对设计模式的学习”"><span class="nav-number">2.</span> <span class="nav-text">重构“对设计模式的学习”</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#干货"><span class="nav-number">2.1.</span> <span class="nav-text">干货</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#总结"><span class="nav-number">2.2.</span> <span class="nav-text">总结</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#缘起"><span class="nav-number">1.</span> <span class="nav-text">缘起</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#鹰啄十式"><span class="nav-number">2.</span> <span class="nav-text">鹰啄十式</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#干货"><span class="nav-number">2.1.</span> <span class="nav-text">干货</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#总结"><span class="nav-number">2.2.</span> <span class="nav-text">总结</span></a></li></ol></li></ol></div>
             
 
           </div>
