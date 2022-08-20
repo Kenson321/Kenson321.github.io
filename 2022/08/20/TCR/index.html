@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="博客,github pages,hexo,next," />
+  <meta name="keywords" content="TCC,两阶段事务,柔性事务," />
 
 
 
@@ -79,18 +79,20 @@
 
 
 
-<meta name="description" content="终于把博客弄好了，所以插一脚分享下经验。当然，这方面的文章有很多，每个人的需求也不一样，有人想傻瓜式最快的速度搭建一个惊艳的博客不求甚解，有人想细致入微，也有人想来个折中。我这篇文章属主要想说明思路，细节的东西直接引用别人现成的就好了。 我的选型：Windows下使用hexo搭建Github Pages">
-<meta name="keywords" content="博客,github pages,hexo,next">
+<meta name="description" content="两年前从微服务转型到区块链，欠下一篇当时对二阶段事务顿悟的文章，今天填坑。">
+<meta name="keywords" content="TCC,两阶段事务,柔性事务">
 <meta property="og:type" content="article">
-<meta property="og:title" content="搭建一个自己的博客">
-<meta property="og:url" content="https://kenson321.github.io/2018/09/01/GitHubPages/index.html">
+<meta property="og:title" content="Try Confirm Recover">
+<meta property="og:url" content="https://kenson321.github.io/2022/08/20/TCR/index.html">
 <meta property="og:site_name" content="Kenson&#39;s Blog">
-<meta property="og:description" content="终于把博客弄好了，所以插一脚分享下经验。当然，这方面的文章有很多，每个人的需求也不一样，有人想傻瓜式最快的速度搭建一个惊艳的博客不求甚解，有人想细致入微，也有人想来个折中。我这篇文章属主要想说明思路，细节的东西直接引用别人现成的就好了。 我的选型：Windows下使用hexo搭建Github Pages">
+<meta property="og:description" content="两年前从微服务转型到区块链，欠下一篇当时对二阶段事务顿悟的文章，今天填坑。">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-09-29T12:37:10.193Z">
+<meta property="og:image" content="https://kenson321.github.io/2022/08/20/TCR/TCR.png">
+<meta property="og:updated_time" content="2022-08-20T13:26:38.268Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="搭建一个自己的博客">
-<meta name="twitter:description" content="终于把博客弄好了，所以插一脚分享下经验。当然，这方面的文章有很多，每个人的需求也不一样，有人想傻瓜式最快的速度搭建一个惊艳的博客不求甚解，有人想细致入微，也有人想来个折中。我这篇文章属主要想说明思路，细节的东西直接引用别人现成的就好了。 我的选型：Windows下使用hexo搭建Github Pages">
+<meta name="twitter:title" content="Try Confirm Recover">
+<meta name="twitter:description" content="两年前从微服务转型到区块链，欠下一篇当时对二阶段事务顿悟的文章，今天填坑。">
+<meta name="twitter:image" content="https://kenson321.github.io/2022/08/20/TCR/TCR.png">
 
 
 
@@ -120,13 +122,13 @@
 
 
 
-  <link rel="canonical" href="https://kenson321.github.io/2018/09/01/GitHubPages/"/>
+  <link rel="canonical" href="https://kenson321.github.io/2022/08/20/TCR/"/>
 
 
 
 
 
-  <title>搭建一个自己的博客 | Kenson's Blog</title>
+  <title>Try Confirm Recover | Kenson's Blog</title>
   
 
 
@@ -263,7 +265,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://kenson321.github.io/2018/09/01/GitHubPages/">
+    <link itemprop="mainEntityOfPage" href="https://kenson321.github.io/2022/08/20/TCR/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Kenson">
@@ -280,7 +282,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">搭建一个自己的博客</h1>
+          <h1 class="post-title" itemprop="name headline">Try Confirm Recover</h1>
         
 
         <div class="post-meta">
@@ -292,8 +294,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-09-01T11:52:11+08:00">
-                2018-09-01
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2022-08-20T16:36:30+08:00">
+                2022-08-20
               </time>
             
 
@@ -308,8 +310,8 @@
               
                 <span class="post-meta-item-text">更新于&#58;</span>
               
-              <time title="更新于" itemprop="dateModified" datetime="2018-09-29T20:37:10+08:00">
-                2018-09-29
+              <time title="更新于" itemprop="dateModified" datetime="2022-08-20T21:26:38+08:00">
+                2022-08-20
               </time>
             
           </span>
@@ -327,8 +329,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Blog/" itemprop="url" rel="index">
-                    <span itemprop="name">Blog</span>
+                  <a href="/categories/感悟/" itemprop="url" rel="index">
+                    <span itemprop="name">感悟</span>
                   </a>
                 </span>
 
@@ -338,8 +340,8 @@
                 
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Blog/github-pages/" itemprop="url" rel="index">
-                    <span itemprop="name">github pages</span>
+                  <a href="/categories/感悟/技术/" itemprop="url" rel="index">
+                    <span itemprop="name">技术</span>
                   </a>
                 </span>
 
@@ -375,29 +377,24 @@
       
 
       
-        <p>终于把博客弄好了，所以插一脚分享下经验。当然，这方面的文章有很多，每个人的需求也不一样，有人想傻瓜式最快的速度搭建一个惊艳的博客不求甚解，有人想细致入微，也有人想来个折中。我这篇文章属主要想说明思路，细节的东西直接引用别人现成的就好了。</p>
-<p>我的选型：<strong>Windows下使用hexo搭建Github Pages</strong></p>
-<a id="more"></a>
-<h1 id="选型"><a href="#选型" class="headerlink" title="选型"></a>选型</h1><p>首先解决方向问题</p>
-<h2 id="为什么要搭建博客"><a href="#为什么要搭建博客" class="headerlink" title="为什么要搭建博客"></a>为什么要搭建博客</h2><p>看过几篇文章总结的不错的，但是忘了出处了，只能把我比较认同的回忆下来：</p>
-<ul>
-<li>个人简历，看你的博客就知道你的写作水平，知道你做过的事情，甚至看到你做出的成果，我是面试官的话我希望能够看到这些</li>
-<li>自媒体，既然愿意写朋友圈，还不如直接写博客呢，喜欢写多长多短都可以，关键是内容还是自己保存着的</li>
-</ul>
-<h2 id="为什么要选Github-Pages"><a href="#为什么要选Github-Pages" class="headerlink" title="为什么要选Github Pages"></a>为什么要选Github Pages</h2><p>博客曾经很流行啊，后来是微博，再到朋友圈，当然博客也一直没有被替代。我记得我当初还是用msn space，现在又流行这么多网站，而我只想要一个：</p>
-<ul>
-<li>权威的，不要让我再换来换去</li>
-<li>用mark down的，因为我只关注内容不想关注形式<br>github大家都说是全球最大的同性网站，而我又那么喜欢open source，而且它又可以让我只关注内容，甚至还能用git像管理代码那样管理blog，所以我选择了Github Pages。<br>另外github还有几个选择：<a href="https://github.com/rainzhaojy/blogs/issues/1" target="_blank" rel="noopener">利用GitHub写博客的几种方式</a></li>
-</ul>
-<h2 id="使用哪个git客户端工具"><a href="#使用哪个git客户端工具" class="headerlink" title="使用哪个git客户端工具"></a>使用哪个git客户端工具</h2><p>我选择<em>GitExtensions</em>，因为它是一个我们公司在用的，windows平台下的图形化工具，很容易上手。另外它本身也包括了官方的<em>Git for Windows</em>，没有任何入侵，只是一个扩展，也就是我可以两个都用。</p>
-<h2 id="为什么选hexo"><a href="#为什么选hexo" class="headerlink" title="为什么选hexo"></a>为什么选hexo</h2><p><a href="https://www.techiediaries.com/jekyll-hugo-hexo/" target="_blank" rel="noopener">How to Choose the Right Static Generator: Jekyll vs. Hugo vs. Hexo</a><br><a href="https://www.slant.co/versus/1006/1020/~jekyll_vs_hexo" target="_blank" rel="noopener">Jekyll vs Hexo detailed comparison as of 2018</a><br>根据这两篇文章的介绍，毫无疑问，hexo是首选。因为里面列出的hexo唯一的缺点也是我想要的优点：Hexo has a relatively large community but the majority is non-english speakers (from China)。主要使用的都是中国人成了外国人眼中的缺点，哈哈。</p>
-<h2 id="为什么要选nexT主题"><a href="#为什么要选nexT主题" class="headerlink" title="为什么要选nexT主题"></a>为什么要选nexT主题</h2><p>就挑一个简单易用的好了，我真的只在乎内容，形式不求张扬个性。nexT貌似很heat。</p>
-<h1 id="步骤"><a href="#步骤" class="headerlink" title="步骤"></a>步骤</h1><p>实践才是真理。这部分内容网上有很多，而我搭建好博客和写这篇文章的时间相差比较远了，重新回忆有点困难，暂时先写这么多吧。以后写文章一定要趁热打铁。。</p>
-<h2 id="申请github-Pages"><a href="#申请github-Pages" class="headerlink" title="申请github Pages"></a>申请github Pages</h2><p>我个人的学习习惯：看官网介绍+别人总结</p>
-<p><a href="https://pages.github.com/" target="_blank" rel="noopener">官网介绍</a><br><a href="https://www.zhihu.com/question/20962496" target="_blank" rel="noopener">别人总结</a></p>
-<h2 id="安装git"><a href="#安装git" class="headerlink" title="安装git"></a>安装git</h2><p><a href="https://www.liaoxuefeng.com/wiki/0013739516305929606dd18361248578c67b8067c8c017b000/00137396287703354d8c6c01c904c7d9ff056ae23da865a000" target="_blank" rel="noopener">安装Git - 廖雪峰的官方网站</a><br><a href="https://blog.csdn.net/shulianghan/article/details/18812279" target="_blank" rel="noopener">GitHub超详细图文攻略</a><br>另外直接google：<em>GitExtensions</em>和<em>Git for Windows</em></p>
-<h2 id="安装hexo"><a href="#安装hexo" class="headerlink" title="安装hexo"></a>安装hexo</h2><p><a href="https://hexo.io/docs/commands" target="_blank" rel="noopener">官网</a><br><a href="https://github.com/peiying/hexo/blob/master/source/_posts/%E6%9C%80%E9%9D%A0%E8%B0%B1%E7%9A%84windows%E4%B8%8B%E6%90%AD%E5%BB%BA%E7%8B%AC%E7%AB%8B%E5%8D%9A%E5%AE%A2GitHub%20Pages%E4%B8%8EHexo%E7%9A%84%E6%95%99%E7%A8%8B.md" target="_blank" rel="noopener">最靠谱的搭建独立博客GitHub Pages与Hexo的教程</a></p>
-<h2 id="安装nexT"><a href="#安装nexT" class="headerlink" title="安装nexT"></a>安装nexT</h2><p><a href="https://theme-next.iissnan.com/getting-started.html" target="_blank" rel="noopener">官网1</a><br><a href="https://github.com/iissnan/hexo-theme-next" target="_blank" rel="noopener">官网2</a></p>
+        <p>两年前从微服务转型到区块链，欠下一篇当时对二阶段事务顿悟的文章，今天填坑。<br><a id="more"></a></p>
+<h1 id="缘起"><a href="#缘起" class="headerlink" title="缘起"></a>缘起</h1><p>  2016年转型做微服务，当时在我至今唯一承认的一位真正意义上的工作上的导师带领下，首先接触研究的是两阶段事务，或称为柔性事务，当时他起了个名字：TCR（Try、Confirm、Recover）。研究的材料主要基于阿里2008年和2010年的PPT，里面介绍了4种类型：TCC（Try Confirm Cancel），补偿型，可靠消息型，非可靠消息型。<br>  2020年转型做区块链，也就是直到那一刻，才突然想透了这4种类型的关系，特别是后面两种，可靠消息型、非可靠消息型，一直被忽视了。</p>
+<h1 id="Try-Confirm-Recover"><a href="#Try-Confirm-Recover" class="headerlink" title="Try Confirm Recover"></a>Try Confirm Recover</h1><p>  分布式事务一致性4种交易类型，一句话概括：<em>一个交易，两个阶段T/CR，三种操作T（ry）、C（onfirm）、R（ecover），四种组合TCR（TCC）、TR（补偿）、TC（可靠消息）、C(R)（非可靠消息）。</em></p>
+<p><img src="TCR.png" alt=""></p>
+<h2 id="TCR"><a href="#TCR" class="headerlink" title="TCR"></a>TCR</h2><p>  TCC型，就是包含三个操作的TCR型，网上的资料较多，而且这个一直是重点讨论的对象，本文暂时先不展开，关键在于：</p>
+<ol>
+<li>T阶段是锁资源</li>
+<li>C、R阶段要支持幂等</li>
+</ol>
+<h2 id="TR"><a href="#TR" class="headerlink" title="TR"></a>TR</h2><p>  补偿型，就是只包含两个操作的TR型，T负责正交易，R负责反交易或冲正，这种模式网上的资料也有不少，而且比较容易理解，本文暂时也先不展开，关键在于：</p>
+<ol>
+<li>高并发会导致R阶段失败的可能性不能被忽略</li>
+<li>R阶段要支持幂等</li>
+</ol>
+<h2 id="TC"><a href="#TC" class="headerlink" title="TC"></a>TC</h2><p>  可靠消息/异步确保型，就是只包含两个操作的TC型。这个是较少讨论的，这里重点展开介绍一下。<br>  首先不要被这里的“消息”一词迷惑，以为一定要用什么消息中间件，也不要被具体的实现方案迷惑，其核心我认为就是TC型，至于怎么做到都可以。<br>  最简单容易理解的方案，就是T阶段在数据库中记下一条记录，与T阶段要更新的其它数据一起commit，保证一致性。而在C阶段，则根据之前的这条记录完成剩余的动作。</p>
+<p>  按着这个方案，回到上面的几个名词，分别解释一下：<br>  可靠：为了实现可靠，也就是保证C阶段一定能完成，可以通过异步进程去定期扫描数据库，把未成功处理的内容重新发起，因此这里C阶段也要支持幂等。<br>  消息：一般这种模式叫做消息，用于通知下一个模块处理，用消息中间件之类的也比较常见，但绝对不要因此被迷惑了<br>  异步：通知消息是异步的一种常见方式，上面说的异步进程去定期扫描数据库，也是必须要有的一个异步手段<br>  确保：与可靠一个含义</p>
+<h2 id="C-R"><a href="#C-R" class="headerlink" title="C(R)"></a>C(R)</h2><p>  非可靠消息/最大努力通知型，就是只包含两个操作的C(R)型。这个也是较少讨论的，这里重点展开介绍一下。<br>  其实更确切的说，C(R)型只包含一个操作C，因为前面没有Try，因此也就不可能需要Recover。既然只有一个操作Confirm，那跟只有Try的差别就是，只有Try就是普通的一阶段交易了，这里说的是两阶段，所以必须是第二阶段的Confirm，因此这个服务通常是被别人调用，并且在别人一阶段处理的时候，这个服务什么都不做，直到第二阶段才处理。</p>
+<p>  按着这个思路，回到上面的几个名词，分别解释一下：<br>  非可靠：与可靠相呼应，因为没有Try阶段的记表，所以C阶段的处理失败了是没有异步进程去重试的，所以不可靠。<br>  消息：这里更加不可能涉及什么消息中间件，只能理解为一阶段的时候被调用了，被一个消息通知了。也有解释说这通常是发了一个短信之类的消息的操作，这种解释应该是误解了，现象可能是这样，但是原理绝对不能这么解释。<br>  最大努力：与非可靠意思一样，就是说通过最大努力的尝试，但是不一定可靠。这里甚至都没有重试的基础，因为在一阶段没有记表。<br>  通知：与消息一个含义。千万也不要曲解了，以为这是尽最大努力（比如重试n次）去发送一个通知消息（比如短信）之类的意思。</p>
 
       
     </div>
@@ -415,13 +412,11 @@
       
         <div class="post-tags">
           
-            <a href="/tags/博客/" rel="tag"># 博客</a>
+            <a href="/tags/TCC/" rel="tag"># TCC</a>
           
-            <a href="/tags/github-pages/" rel="tag"># github pages</a>
+            <a href="/tags/两阶段事务/" rel="tag"># 两阶段事务</a>
           
-            <a href="/tags/hexo/" rel="tag"># hexo</a>
-          
-            <a href="/tags/next/" rel="tag"># next</a>
+            <a href="/tags/柔性事务/" rel="tag"># 柔性事务</a>
           
         </div>
       
@@ -434,15 +429,15 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
+              <a href="/2022/08/07/鹰啄十式/" rel="next" title="鹰啄十式">
+                <i class="fa fa-chevron-left"></i> 鹰啄十式
+              </a>
+            
           </div>
 
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2018/09/02/basketBall-shoot/" rel="prev" title="投篮">
-                投篮 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -578,7 +573,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#选型"><span class="nav-number">1.</span> <span class="nav-text">选型</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#为什么要搭建博客"><span class="nav-number">1.1.</span> <span class="nav-text">为什么要搭建博客</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#为什么要选Github-Pages"><span class="nav-number">1.2.</span> <span class="nav-text">为什么要选Github Pages</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#使用哪个git客户端工具"><span class="nav-number">1.3.</span> <span class="nav-text">使用哪个git客户端工具</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#为什么选hexo"><span class="nav-number">1.4.</span> <span class="nav-text">为什么选hexo</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#为什么要选nexT主题"><span class="nav-number">1.5.</span> <span class="nav-text">为什么要选nexT主题</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#步骤"><span class="nav-number">2.</span> <span class="nav-text">步骤</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#申请github-Pages"><span class="nav-number">2.1.</span> <span class="nav-text">申请github Pages</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#安装git"><span class="nav-number">2.2.</span> <span class="nav-text">安装git</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#安装hexo"><span class="nav-number">2.3.</span> <span class="nav-text">安装hexo</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#安装nexT"><span class="nav-number">2.4.</span> <span class="nav-text">安装nexT</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#缘起"><span class="nav-number">1.</span> <span class="nav-text">缘起</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Try-Confirm-Recover"><span class="nav-number">2.</span> <span class="nav-text">Try Confirm Recover</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#TCR"><span class="nav-number">2.1.</span> <span class="nav-text">TCR</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#TR"><span class="nav-number">2.2.</span> <span class="nav-text">TR</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#TC"><span class="nav-number">2.3.</span> <span class="nav-text">TC</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#C-R"><span class="nav-number">2.4.</span> <span class="nav-text">C(R)</span></a></li></ol></li></ol></div>
             
 
           </div>
