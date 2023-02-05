@@ -1,0 +1,804 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Golang,WASM,国密," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="WASM，WEB的第4种语言。如果说nodejs是让前端码农打通后端直升为全栈程序员的捷径，那么WASM很可能是让后端码农打通前端的另一个蹊径。Golang，21世纪的C语言，Golang原生支持WASM，Golang还有自己的汇编以及cgo，不了解一下Golang与WASM，感觉会错过了几个亿。">
+<meta name="keywords" content="Golang,WASM,国密">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Golang与WASM">
+<meta property="og:url" content="https://kenson321.github.io/2023/02/05/golang-wasm-介绍/index.html">
+<meta property="og:site_name" content="Kenson&#39;s Blog">
+<meta property="og:description" content="WASM，WEB的第4种语言。如果说nodejs是让前端码农打通后端直升为全栈程序员的捷径，那么WASM很可能是让后端码农打通前端的另一个蹊径。Golang，21世纪的C语言，Golang原生支持WASM，Golang还有自己的汇编以及cgo，不了解一下Golang与WASM，感觉会错过了几个亿。">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://kenson321.github.io/2023/02/05/golang-wasm-介绍/1.jpg">
+<meta property="og:image" content="https://kenson321.github.io/2023/02/05/golang-wasm-介绍/2.jpg">
+<meta property="og:image" content="https://kenson321.github.io/2023/02/05/golang-wasm-介绍/3.jpg">
+<meta property="og:image" content="https://kenson321.github.io/2023/02/05/golang-wasm-介绍/4.jpg">
+<meta property="og:image" content="https://kenson321.github.io/2023/02/05/golang-wasm-介绍/5.jpg">
+<meta property="og:image" content="https://kenson321.github.io/2023/02/05/golang-wasm-介绍/7.jpg">
+<meta property="og:image" content="https://kenson321.github.io/2023/02/05/golang-wasm-介绍/6.jpg">
+<meta property="og:updated_time" content="2023-02-05T03:32:45.751Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Golang与WASM">
+<meta name="twitter:description" content="WASM，WEB的第4种语言。如果说nodejs是让前端码农打通后端直升为全栈程序员的捷径，那么WASM很可能是让后端码农打通前端的另一个蹊径。Golang，21世纪的C语言，Golang原生支持WASM，Golang还有自己的汇编以及cgo，不了解一下Golang与WASM，感觉会错过了几个亿。">
+<meta name="twitter:image" content="https://kenson321.github.io/2023/02/05/golang-wasm-介绍/1.jpg">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://kenson321.github.io/2023/02/05/golang-wasm-介绍/"/>
+
+
+
+
+
+  <title>Golang与WASM | Kenson's Blog</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Kenson's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://kenson321.github.io/2023/02/05/golang-wasm-介绍/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Kenson">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/luffy.JPG">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Kenson's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Golang与WASM</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2023-02-05T10:59:26+08:00">
+                2023-02-05
+              </time>
+            
+
+            
+              <span class="post-meta-divider">|</span>
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-check-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">更新于&#58;</span>
+              
+              <time title="更新于" itemprop="dateModified" datetime="2023-02-05T11:32:45+08:00">
+                2023-02-05
+              </time>
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/学习/" itemprop="url" rel="index">
+                    <span itemprop="name">学习</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/学习/技术/" itemprop="url" rel="index">
+                    <span itemprop="name">技术</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>WASM，WEB的第4种语言。如果说nodejs是让前端码农打通后端直升为全栈程序员的捷径，那么WASM很可能是让后端码农打通前端的另一个蹊径。Golang，21世纪的C语言，Golang原生支持WASM，Golang还有自己的汇编以及cgo，不了解一下Golang与WASM，感觉会错过了几个亿。<br><a id="more"></a></p>
+<h1 id="Golang与WASM"><a href="#Golang与WASM" class="headerlink" title="Golang与WASM"></a>Golang与WASM</h1><h2 id="授之与渔"><a href="#授之与渔" class="headerlink" title="授之与渔"></a>授之与渔</h2><p>本文内容的出处。学习新技术新知识，通常也离不开以下方法：</p>
+<ol>
+<li>搜索。首先看一些博客，快速了解个大概，本文内容也参考了一些博客文章，特别是这一篇：<a href="https://studygolang.com/articles/13611/comment/22479" target="_blank" rel="noopener">关于Go即将支持的WebAssembly的一些注意事项</a></li>
+<li>书。博客受篇幅所限，比较难体系的进行介绍，而书则一般会系统的进行讲解，本文参考了：柴树彬、丁尔男《WebAssembly标准入门》第七章</li>
+<li>官网。不管是博客还是书，其知识来源都是官网，在看完别人的经验后，回到官网才能正本清源，掌握核心正确的内容，因此参考官网：<a href="https://github.com/golang/go/wiki/WebAssembly" target="_blank" rel="noopener">Golang WebAssembly</a></li>
+<li>理论指导实践，实践检验真理。动手试一试，基本就能了解个大概了。<h2 id="结论"><a href="#结论" class="headerlink" title="结论"></a>结论</h2>因为卷的厉害，大家都比较急躁，能拿来主义是再好不过了，因此先给出本文的结论，以便决定是否值得继续往下看：</li>
+<li>基本上可以通过WASM用golang取代javascript写代码。</li>
+<li>但避免不了学习javascript语法。特别是如果想完全不写javascript代码的话，则必须在golang里面按照javascript的语法写一些与浏览器、html交互的代码，另外也必须掌握javascript和golang的数据类型转换。也就是说，有一部分的javascript代码，只是从js文件里面迁移到go文件里面而已，不掌握javascript是写不出相关的代码的。</li>
+<li>golang写的代码适合运行消耗cpu的任务，javascript写的代码适合运行与浏览器和html交互、与io和异步执行相关的任务，这样整体上能发挥各自的性能优势。</li>
+<li>综上，应该是javascript+WASM（golang）。引入WASM可以少写一些javascript代码，少掌握一些javascript的技术，并带来消耗cpu的任务的性能提升，以及引入一些非javascript的工具和算法库，但暂时无法完全取代javascript的地位。<h2 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h2><h3 id="Golang"><a href="#Golang" class="headerlink" title="Golang"></a>Golang</h3>21世纪的C语言，具体不介绍了，不具备golang背景的可以看别的后端语言如何支持WASM的文章。<h3 id="WASM"><a href="#WASM" class="headerlink" title="WASM"></a>WASM</h3>WebAssembly，简单说就是一种网页汇编语言，可以直接用她写类汇编的代码，然后编译成WASM字节码，同样也可以把其他高级语言（Rust、C、C++、Golang等）编译成WASM字节码，然后在网页上加载WASM字节码并执行其中的方法。其在WEB中的作用与javascript基本一致，不过更底层，可以说是javascript的补充。<h3 id="Golang对WASM的支持"><a href="#Golang对WASM的支持" class="headerlink" title="Golang对WASM的支持"></a>Golang对WASM的支持</h3>参考官网的介绍，Go从1.11开始支持WebAssembly<br><img src="1.jpg" alt=""><h4 id="生成WASM的GO文件"><a href="#生成WASM的GO文件" class="headerlink" title="生成WASM的GO文件"></a>生成WASM的GO文件</h4>参考官网的介绍<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">package main</span><br><span class="line">import &quot;fmt&quot;</span><br><span class="line">func main() &#123;</span><br><span class="line">	fmt.Println(&quot;Hello, WebAssembly!&quot;)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<h4 id="生成WASM文件"><a href="#生成WASM文件" class="headerlink" title="生成WASM文件"></a>生成WASM文件</h4><p>参考官网的介绍<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">#set GOARCH=wasm</span><br><span class="line">export GOARCH=wasm</span><br><span class="line">#set GOOS=js</span><br><span class="line">export GOOS=js</span><br><span class="line">go build -o a.out.wasm hello.go</span><br></pre></td></tr></table></figure></p>
+<p>生成的文件放在当前目录下即可<br><strong>注意</strong><br>参考官网的介绍</p>
+<ol>
+<li>如果没有设置环境变量就进行go build，会报错：WebAssembly.instantiate(): expected magic word<br><img src="2.jpg" alt=""></li>
+<li>如果go程序不是package main，也会报错：WebAssembly.instantiate(): expected magic word。package main编译出来的文件会比较大（估计是判断为main的话，则增加了很多暴露给javascript的方法），而非package main的则会较小。<br><img src="3.jpg" alt=""><h4 id="wasm-exec-js"><a href="#wasm-exec-js" class="headerlink" title="wasm_exec.js"></a>wasm_exec.js</h4>参考官网的介绍，需要把golang安装目录下的该文件拷贝到当前目录下<br><code>cp &quot;$(go env GOROOT)/misc/wasm/wasm_exec.js&quot;</code><br>该文件的作用主要是起到桥梁的作用，引入GO生成的WASM中的方法，以及暴露一些方法给GO代码调用，同时提供一些入口函数让前端引入GO的WASM文件时进行初始化。<h4 id="wasm-exec-html"><a href="#wasm-exec-html" class="headerlink" title="wasm_exec.html"></a>wasm_exec.html</h4>官网和书都没有提到这个文件，只是说要创建一个index.html。但是博客提到了，实际在上述目录中，golang已经为我们准备了这个index.html的模板，就是wasm_exec.html。<br><img src="4.jpg" alt=""><br>同样，把该文件拷贝到当前目录下，并重命名为index.html。<br>然后，修改其中的<code>fetch(&quot;test.wasm&quot;)</code>，替换为上面生成的WASM文件，即<code>fetch(&quot;a.out.wasm&quot;）</code>，就可以了。当然也可改为完整的文件获取路径，比如：<code>fetch(&quot;http://localhost:8080/download/a.out.wasm&quot;）</code>。<br>观察这个html，可发现该语句：<code>&lt;script src=&quot;wasm_exec.js&quot;&gt;&lt;/script&gt;</code>，通过这一语句引入了之前的wasm_exec.js文件。<h4 id="通过web服务器启动"><a href="#通过web服务器启动" class="headerlink" title="通过web服务器启动"></a>通过web服务器启动</h4>参考官网和博客，不想引入别的新东西，直接用golang写一个http服务server.go，非常简单<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">package main</span><br><span class="line"></span><br><span class="line">import (</span><br><span class="line">	&quot;net/http&quot;</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line">func main() &#123;</span><br><span class="line">	mux := http.NewServeMux()</span><br><span class="line"></span><br><span class="line">	mux.Handle(&quot;/&quot;, http.FileServer(http.Dir(`.`)))</span><br><span class="line"></span><br><span class="line">	server := &amp;http.Server&#123;</span><br><span class="line">		Addr:    &quot;:8080&quot;,</span><br><span class="line">		Handler: mux,</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	server.ListenAndServe()</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<p>执行<code>go run server.go</code>启动程序开启http服务，打开浏览器<code>http://localhost:8080</code>，按下<code>F12</code>打开控制台观察到输出：（截图稍有不同，因为加了一些调试信息）<br><img src="5.jpg" alt=""></p>
+<h2 id="一个实际应用的例子–在前端使用国密对文件进行加解密"><a href="#一个实际应用的例子–在前端使用国密对文件进行加解密" class="headerlink" title="一个实际应用的例子–在前端使用国密对文件进行加解密"></a>一个实际应用的例子–在前端使用国密对文件进行加解密</h2><p>通过上面的demo可以对整体有个大致的了解，接下来以一个实际应用的场景为例加深认识。例子主要是在前端使用国密对文件进行加解密，加解密算法库使用Golang的，通过WASM引入到前端。</p>
+<h3 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h3><p>一般比较少在前端进行文件加解密，通常是先用工具加密文件，然后再上传浏览器，接着tls加密传输到服务器端。这里的例子只是一个尝试，当然也可能存在某些必须如此实现的场景。</p>
+<p>值得注意的是，在浏览器端按F12是能看到完整的javascript代码的，因此会暴露密钥以及加密算法，浏览器的缓存机制也会导致存在泄露的风险。通常可以通过代码压缩和代码混淆之类的工具做一些改进，缓存也可以手动清理。因此，在这里如果引入使用WASM的话，也是一种值得尝试的类代码混淆的方式。</p>
+<p>另一方面，目前前端javascript的加解密库主要是非国密的，国密的开源库有那么几个，但是性能好像不太理想，因此也值得尝试把Golang的国密开源库通过WASM引入到前端，验证WASM是否确实能够解决性能问题。</p>
+<h3 id="程序"><a href="#程序" class="headerlink" title="程序"></a>程序</h3><h4 id="index-html"><a href="#index-html" class="headerlink" title="index.html"></a>index.html</h4><p>在上述demo的index.html中，增加如下文件上传下载的操作按钮以及对应的响应事件javascript代码。<br>在代码中，只有goWasmEncrypt、goWasmDecrypt两个方法是未知的，其它都是原生的内容，可以直接运行验证。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br></pre></td><td class="code"><pre><span class="line">&lt;body&gt;</span><br><span class="line">	&lt;script&gt;</span><br><span class="line">		var fileName</span><br><span class="line">		var encryptFile</span><br><span class="line">		function submitFile(isEn) &#123;</span><br><span class="line">			const files = document.getElementById(&quot;f1&quot;).files[0]</span><br><span class="line">			alert(&quot;file size: &quot; + files.size)</span><br><span class="line">			fileName = files.name</span><br><span class="line">		</span><br><span class="line">			var reader = new FileReader();</span><br><span class="line">			reader.onload = function (event) &#123;</span><br><span class="line">				var byteArray = new Uint8Array(event.target.result);</span><br><span class="line">				var date1 = new Date()</span><br><span class="line">				if (isEn) &#123;</span><br><span class="line">					encryptFile = goWasmEncrypt(&quot;1234567890abcdef&quot;, byteArray);</span><br><span class="line">				&#125; else &#123;</span><br><span class="line">					encryptFile = goWasmDecrypt(&quot;1234567890abcdef&quot;, byteArray);</span><br><span class="line">				&#125;</span><br><span class="line">				var date2 = new Date()</span><br><span class="line">				var last = date2.getTime() - date1.getTime()</span><br><span class="line">				alert(&quot;elapse time: &quot; + last)</span><br><span class="line">			&#125;;</span><br><span class="line">			</span><br><span class="line">			reader.readAsArrayBuffer(files)</span><br><span class="line">		&#125;</span><br><span class="line">		function downloadFile(isEn) &#123;</span><br><span class="line">			var url = window.URL.createObjectURL(</span><br><span class="line">				new Blob([encryptFile])</span><br><span class="line">			)</span><br><span class="line">			var link = document.createElement(&apos;a&apos;)</span><br><span class="line">			link.style.display = &apos;none&apos;</span><br><span class="line">			link.href = url</span><br><span class="line">			if (isEn) &#123;</span><br><span class="line">				link.download = fileName + &quot;_wasm_en&quot;</span><br><span class="line">			&#125; else &#123;</span><br><span class="line">				link.download = fileName + &quot;_wasm_de&quot;</span><br><span class="line">			&#125;</span><br><span class="line">			document.body.appendChild(link)</span><br><span class="line">			link.click()</span><br><span class="line">			window.URL.revokeObjectURL(url)</span><br><span class="line">		&#125;</span><br><span class="line">	&lt;/script&gt;</span><br><span class="line">		</span><br><span class="line">	&lt;div&gt;</span><br><span class="line">			&lt;input type=&quot;file&quot; id=&quot;f1&quot; /&gt;</span><br><span class="line">	&lt;/div&gt;</span><br><span class="line">	&lt;input type=&quot;button&quot; value=&quot;上传文件加密&quot; onclick=&quot;submitFile(true)&quot; /&gt;</span><br><span class="line">	&lt;input type=&quot;button&quot; value=&quot;下载加密文件&quot; onclick=&quot;downloadFile(true)&quot; /&gt;</span><br><span class="line">	&lt;input type=&quot;button&quot; value=&quot;上传文件解密&quot; onclick=&quot;submitFile(false)&quot; /&gt;</span><br><span class="line">	&lt;input type=&quot;button&quot; value=&quot;下载解密文件&quot; onclick=&quot;downloadFile(false)&quot; /&gt;</span><br><span class="line">&lt;/body&gt;</span><br></pre></td></tr></table></figure></p>
+<h4 id="gm-go"><a href="#gm-go" class="headerlink" title="gm.go"></a>gm.go</h4><p>goWasmEncrypt、goWasmDecrypt两个方法，需要通过下面go程序中的<code>js.Global().Set()</code>方式从go中暴露到javascript侧。<br>官网首页没有介绍，但是博客和书都提到了，就是main程序必须一直执行，所以下面通过channel的方式让main程序一直运行。同样的，要执行这个例子，打开浏览器后，必须先按一次run按钮，把main程序执行启来，然后才能接着点后续的”上传文件加密”等按钮。<br>下面引用到的国密开源库，是github.com/tjfoc/gmsm，具体可参考github上的说明。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br></pre></td><td class="code"><pre><span class="line">package main</span><br><span class="line"></span><br><span class="line">import (</span><br><span class="line">        &quot;bytes&quot;</span><br><span class="line">        &quot;fmt&quot;</span><br><span class="line">        &quot;log&quot;</span><br><span class="line"></span><br><span class="line">        &quot;crypto/cipher&quot;</span><br><span class="line">        &quot;github.com/tjfoc/gmsm/sm4&quot;</span><br><span class="line"></span><br><span class="line">        &quot;syscall/js&quot;</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line">func main() &#123;</span><br><span class="line">        fmt.Println(&quot;go wasm is running in js&quot;)</span><br><span class="line"></span><br><span class="line">        done := make(chan int, 0)</span><br><span class="line">        js.Global().Set(&quot;goWasmEncrypt&quot;, js.FuncOf(goWasmEncrypt))</span><br><span class="line">        js.Global().Set(&quot;goWasmDecrypt&quot;, js.FuncOf(goWasmDecrypt))</span><br><span class="line">        &lt;-done</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">func goWasmEncrypt(this js.Value, args []js.Value) interface&#123;&#125; &#123;</span><br><span class="line">        // 从js读取</span><br><span class="line">        key := args[0].String() //&quot;1234567890abcdef&quot;</span><br><span class="line">        data := make([]byte, args[1].Length())</span><br><span class="line">        js.CopyBytesToGo(data, args[1])</span><br><span class="line"></span><br><span class="line">        eData := processSM4(key, data, true)</span><br><span class="line"></span><br><span class="line">        // 返回到js</span><br><span class="line">        res := js.Global().Get(&quot;Uint8Array&quot;).New(len(eData))</span><br><span class="line">        js.CopyBytesToJS(res, eData)</span><br><span class="line"></span><br><span class="line">        return res</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">func goWasmDecrypt(this js.Value, args []js.Value) interface&#123;&#125; &#123;</span><br><span class="line">        // 从js读取</span><br><span class="line">        key := args[0].String() //&quot;1234567890abcdef&quot;</span><br><span class="line">        data := make([]byte, args[1].Length())</span><br><span class="line">        js.CopyBytesToGo(data, args[1])</span><br><span class="line"></span><br><span class="line">        eData := processSM4(key, data, false)</span><br><span class="line"></span><br><span class="line">        // 返回到js</span><br><span class="line">        res := js.Global().Get(&quot;Uint8Array&quot;).New(len(eData))</span><br><span class="line">        js.CopyBytesToJS(res, eData)</span><br><span class="line"></span><br><span class="line">        return res</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">//github.com/tjfoc/gmsm/API使用说明.md</span><br><span class="line">//## SM4分组密码算法 - SM4 block cipher algorithm</span><br><span class="line">//遵循的SM4标准号为:  GM/T 0002-2012</span><br><span class="line">func processSM4(sKey string, data []byte, isEn bool) []byte &#123;</span><br><span class="line">        // 128比特密钥</span><br><span class="line">        key := []byte(sKey)</span><br><span class="line"></span><br><span class="line">        // 128比特iv</span><br><span class="line">        iv := make([]byte, sm4.BlockSize)</span><br><span class="line"></span><br><span class="line">        if isEn &#123;</span><br><span class="line">                ciphertxt, err := sm4Encrypt(key, iv, data)</span><br><span class="line">                if err != nil &#123;</span><br><span class="line">                        log.Fatal(err)</span><br><span class="line">                &#125;</span><br><span class="line">                return ciphertxt</span><br><span class="line">        &#125; else &#123;</span><br><span class="line">                text, err := sm4Decrypt(key, iv, data)</span><br><span class="line">                if err != nil &#123;</span><br><span class="line">                        log.Fatal(err)</span><br><span class="line">                &#125;</span><br><span class="line">                return text</span><br><span class="line">        &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">//#### NewCipher</span><br><span class="line">//创建SM4密码分组算法模型，参数key长度只支持128比特。</span><br><span class="line">func sm4Encrypt(key, iv, plainText []byte) ([]byte, error) &#123;</span><br><span class="line">        block, err := sm4.NewCipher(key)</span><br><span class="line">        if err != nil &#123;</span><br><span class="line">                return nil, err</span><br><span class="line">        &#125;</span><br><span class="line">        blockSize := block.BlockSize()</span><br><span class="line">        origData := pkcs5Padding(plainText, blockSize)</span><br><span class="line">        blockMode := cipher.NewCBCEncrypter(block, iv)</span><br><span class="line">        cryted := make([]byte, len(origData))</span><br><span class="line">        blockMode.CryptBlocks(cryted, origData)</span><br><span class="line">        return cryted, nil</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">func sm4Decrypt(key, iv, cipherText []byte) ([]byte, error) &#123;</span><br><span class="line">        block, err := sm4.NewCipher(key)</span><br><span class="line">        if err != nil &#123;</span><br><span class="line">                return nil, err</span><br><span class="line">        &#125;</span><br><span class="line">        blockMode := cipher.NewCBCDecrypter(block, iv)</span><br><span class="line">        origData := make([]byte, len(cipherText))</span><br><span class="line">        blockMode.CryptBlocks(origData, cipherText)</span><br><span class="line">        origData = pkcs5UnPadding(origData)</span><br><span class="line">        return origData, nil</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">// pkcs5填充</span><br><span class="line">func pkcs5Padding(src []byte, blockSize int) []byte &#123;</span><br><span class="line">        padding := blockSize - len(src)%blockSize</span><br><span class="line">        padtext := bytes.Repeat([]byte&#123;byte(padding)&#125;, padding)</span><br><span class="line">        return append(src, padtext...)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">func pkcs5UnPadding(src []byte) []byte &#123;</span><br><span class="line">        length := len(src)</span><br><span class="line">        unpadding := int(src[length-1])</span><br><span class="line">        return src[:(length - unpadding)]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h3 id="演示界面操作"><a href="#演示界面操作" class="headerlink" title="演示界面操作"></a>演示界面操作</h3><p><img src="7.jpg" alt=""></p>
+<h3 id="结论-1"><a href="#结论-1" class="headerlink" title="结论"></a>结论</h3><ol>
+<li>WASM能实现一定程度的代码混淆，参考如下截图，要破解80万行的WebAssembly汇编代码逻辑，非专业人士应该比较困难，不像javascript那样，只要是前端码农应该都能边看边猜。<br><img src="6.jpg" alt=""></li>
+<li>让WASM负责消耗CPU类型的任务，也就是这里的加解密，性能会有不错的提升。但注意不要让WASM执行文件读取等IO操作，否则执行的效率会打折扣。<br>以100MB文件作为测试数据：<br>语言|加密耗时|解密耗时<br>:–|:–|:–<br>golang使用go build编译后的可执行程序|1到2秒|2到3秒<br>通过过WASM把上述golang的程序引入到前端|20到30秒|10到20秒<br>javascript开源库|1分钟以上|1分钟以上</li>
+<li>生成的WASM文件在3MB左右，比起js的几k，几十k，大了上百倍。不过官网上也提供了压缩的方式，可以进一步参考验证。</li>
+<li>IE不支持WASM，虽然目前普遍不用IE了，但始终还是有用IE的用户。</li>
+</ol>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Golang/" rel="tag"># Golang</a>
+          
+            <a href="/tags/WASM/" rel="tag"># WASM</a>
+          
+            <a href="/tags/国密/" rel="tag"># 国密</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2022/08/20/TCR/" rel="next" title="Try Confirm Recover">
+                <i class="fa fa-chevron-left"></i> Try Confirm Recover
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/uploads/luffy.JPG"
+                alt="Kenson" />
+            
+              <p class="site-author-name" itemprop="name">Kenson</p>
+              <p class="site-description motion-element" itemprop="description">灾难总是接踵而至，这正是世间的常理。你以为只要解释一下，就有谁会来救你吗？要是死了，就只能说明我不过是如此程度的男人。——OnePiece-索隆</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">11</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">12</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">23</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Golang与WASM"><span class="nav-number">1.</span> <span class="nav-text">Golang与WASM</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#授之与渔"><span class="nav-number">1.1.</span> <span class="nav-text">授之与渔</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#结论"><span class="nav-number">1.2.</span> <span class="nav-text">结论</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#介绍"><span class="nav-number">1.3.</span> <span class="nav-text">介绍</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Golang"><span class="nav-number">1.3.1.</span> <span class="nav-text">Golang</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#WASM"><span class="nav-number">1.3.2.</span> <span class="nav-text">WASM</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Golang对WASM的支持"><span class="nav-number">1.3.3.</span> <span class="nav-text">Golang对WASM的支持</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#生成WASM的GO文件"><span class="nav-number">1.3.3.1.</span> <span class="nav-text">生成WASM的GO文件</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#生成WASM文件"><span class="nav-number">1.3.3.2.</span> <span class="nav-text">生成WASM文件</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#wasm-exec-js"><span class="nav-number">1.3.3.3.</span> <span class="nav-text">wasm_exec.js</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#wasm-exec-html"><span class="nav-number">1.3.3.4.</span> <span class="nav-text">wasm_exec.html</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#通过web服务器启动"><span class="nav-number">1.3.3.5.</span> <span class="nav-text">通过web服务器启动</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#一个实际应用的例子–在前端使用国密对文件进行加解密"><span class="nav-number">1.4.</span> <span class="nav-text">一个实际应用的例子–在前端使用国密对文件进行加解密</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#背景"><span class="nav-number">1.4.1.</span> <span class="nav-text">背景</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#程序"><span class="nav-number">1.4.2.</span> <span class="nav-text">程序</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#index-html"><span class="nav-number">1.4.2.1.</span> <span class="nav-text">index.html</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#gm-go"><span class="nav-number">1.4.2.2.</span> <span class="nav-text">gm.go</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#演示界面操作"><span class="nav-number">1.4.3.</span> <span class="nav-text">演示界面操作</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#结论-1"><span class="nav-number">1.4.4.</span> <span class="nav-text">结论</span></a></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2018 &mdash; <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Kenson</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Muse</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
