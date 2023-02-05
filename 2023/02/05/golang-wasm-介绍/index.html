@@ -94,7 +94,7 @@
 <meta property="og:image" content="https://kenson321.github.io/2023/02/05/golang-wasm-介绍/5.jpg">
 <meta property="og:image" content="https://kenson321.github.io/2023/02/05/golang-wasm-介绍/7.jpg">
 <meta property="og:image" content="https://kenson321.github.io/2023/02/05/golang-wasm-介绍/6.jpg">
-<meta property="og:updated_time" content="2023-02-05T03:32:45.751Z">
+<meta property="og:updated_time" content="2023-02-05T03:42:20.246Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Golang与WASM">
 <meta name="twitter:description" content="WASM，WEB的第4种语言。如果说nodejs是让前端码农打通后端直升为全栈程序员的捷径，那么WASM很可能是让后端码农打通前端的另一个蹊径。Golang，21世纪的C语言，Golang原生支持WASM，Golang还有自己的汇编以及cgo，不了解一下Golang与WASM，感觉会错过了几个亿。">
@@ -316,7 +316,7 @@
               
                 <span class="post-meta-item-text">更新于&#58;</span>
               
-              <time title="更新于" itemprop="dateModified" datetime="2023-02-05T11:32:45+08:00">
+              <time title="更新于" itemprop="dateModified" datetime="2023-02-05T11:42:20+08:00">
                 2023-02-05
               </time>
             
@@ -389,13 +389,19 @@
 <li>搜索。首先看一些博客，快速了解个大概，本文内容也参考了一些博客文章，特别是这一篇：<a href="https://studygolang.com/articles/13611/comment/22479" target="_blank" rel="noopener">关于Go即将支持的WebAssembly的一些注意事项</a></li>
 <li>书。博客受篇幅所限，比较难体系的进行介绍，而书则一般会系统的进行讲解，本文参考了：柴树彬、丁尔男《WebAssembly标准入门》第七章</li>
 <li>官网。不管是博客还是书，其知识来源都是官网，在看完别人的经验后，回到官网才能正本清源，掌握核心正确的内容，因此参考官网：<a href="https://github.com/golang/go/wiki/WebAssembly" target="_blank" rel="noopener">Golang WebAssembly</a></li>
-<li>理论指导实践，实践检验真理。动手试一试，基本就能了解个大概了。<h2 id="结论"><a href="#结论" class="headerlink" title="结论"></a>结论</h2>因为卷的厉害，大家都比较急躁，能拿来主义是再好不过了，因此先给出本文的结论，以便决定是否值得继续往下看：</li>
+<li>理论指导实践，实践检验真理。动手试一试，基本就能了解个大概了。</li>
+</ol>
+<h2 id="结论"><a href="#结论" class="headerlink" title="结论"></a>结论</h2><p>因为卷的厉害，大家都比较急躁，能拿来主义是再好不过了，因此先给出本文的结论，以便决定是否值得继续往下看：</p>
+<ol>
 <li>基本上可以通过WASM用golang取代javascript写代码。</li>
 <li>但避免不了学习javascript语法。特别是如果想完全不写javascript代码的话，则必须在golang里面按照javascript的语法写一些与浏览器、html交互的代码，另外也必须掌握javascript和golang的数据类型转换。也就是说，有一部分的javascript代码，只是从js文件里面迁移到go文件里面而已，不掌握javascript是写不出相关的代码的。</li>
 <li>golang写的代码适合运行消耗cpu的任务，javascript写的代码适合运行与浏览器和html交互、与io和异步执行相关的任务，这样整体上能发挥各自的性能优势。</li>
-<li>综上，应该是javascript+WASM（golang）。引入WASM可以少写一些javascript代码，少掌握一些javascript的技术，并带来消耗cpu的任务的性能提升，以及引入一些非javascript的工具和算法库，但暂时无法完全取代javascript的地位。<h2 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h2><h3 id="Golang"><a href="#Golang" class="headerlink" title="Golang"></a>Golang</h3>21世纪的C语言，具体不介绍了，不具备golang背景的可以看别的后端语言如何支持WASM的文章。<h3 id="WASM"><a href="#WASM" class="headerlink" title="WASM"></a>WASM</h3>WebAssembly，简单说就是一种网页汇编语言，可以直接用她写类汇编的代码，然后编译成WASM字节码，同样也可以把其他高级语言（Rust、C、C++、Golang等）编译成WASM字节码，然后在网页上加载WASM字节码并执行其中的方法。其在WEB中的作用与javascript基本一致，不过更底层，可以说是javascript的补充。<h3 id="Golang对WASM的支持"><a href="#Golang对WASM的支持" class="headerlink" title="Golang对WASM的支持"></a>Golang对WASM的支持</h3>参考官网的介绍，Go从1.11开始支持WebAssembly<br><img src="1.jpg" alt=""><h4 id="生成WASM的GO文件"><a href="#生成WASM的GO文件" class="headerlink" title="生成WASM的GO文件"></a>生成WASM的GO文件</h4>参考官网的介绍<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">package main</span><br><span class="line">import &quot;fmt&quot;</span><br><span class="line">func main() &#123;</span><br><span class="line">	fmt.Println(&quot;Hello, WebAssembly!&quot;)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-</li>
+<li>综上，应该是javascript+WASM（golang）。引入WASM可以少写一些javascript代码，少掌握一些javascript的技术，并带来消耗cpu的任务的性能提升，以及引入一些非javascript的工具和算法库，但暂时无法完全取代javascript的地位。</li>
 </ol>
+<h2 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h2><h3 id="Golang"><a href="#Golang" class="headerlink" title="Golang"></a>Golang</h3><p>21世纪的C语言，具体不介绍了，不具备golang背景的可以看别的后端语言如何支持WASM的文章。</p>
+<h3 id="WASM"><a href="#WASM" class="headerlink" title="WASM"></a>WASM</h3><p>WebAssembly，简单说就是一种网页汇编语言，可以直接用她写类汇编的代码，然后编译成WASM字节码，同样也可以把其他高级语言（Rust、C、C++、Golang等）编译成WASM字节码，然后在网页上加载WASM字节码并执行其中的方法。其在WEB中的作用与javascript基本一致，不过更底层，可以说是javascript的补充。</p>
+<h3 id="Golang对WASM的支持"><a href="#Golang对WASM的支持" class="headerlink" title="Golang对WASM的支持"></a>Golang对WASM的支持</h3><p>参考官网的介绍，Go从1.11开始支持WebAssembly<br><img src="1.jpg" alt=""></p>
+<h4 id="生成WASM的GO文件"><a href="#生成WASM的GO文件" class="headerlink" title="生成WASM的GO文件"></a>生成WASM的GO文件</h4><p>参考官网的介绍<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">package main</span><br><span class="line">import &quot;fmt&quot;</span><br><span class="line">func main() &#123;</span><br><span class="line">	fmt.Println(&quot;Hello, WebAssembly!&quot;)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
 <h4 id="生成WASM文件"><a href="#生成WASM文件" class="headerlink" title="生成WASM文件"></a>生成WASM文件</h4><p>参考官网的介绍<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">#set GOARCH=wasm</span><br><span class="line">export GOARCH=wasm</span><br><span class="line">#set GOOS=js</span><br><span class="line">export GOOS=js</span><br><span class="line">go build -o a.out.wasm hello.go</span><br></pre></td></tr></table></figure></p>
 <p>生成的文件放在当前目录下即可<br><strong>注意</strong><br>参考官网的介绍</p>
 <ol>
