@@ -98,8 +98,9 @@
 <meta property="og:image" content="https://kenson321.github.io/2024/06/23/WeChatSpidier/9.jpg">
 <meta property="og:image" content="https://kenson321.github.io/2024/06/23/WeChatSpidier/10.jpg">
 <meta property="og:image" content="https://kenson321.github.io/2024/06/23/WeChatSpidier/11.jpg">
+<meta property="og:image" content="https://kenson321.github.io/2024/06/23/WeChatSpidier/11-2.jpg">
 <meta property="og:image" content="https://kenson321.github.io/2024/06/23/WeChatSpidier/12.jpg">
-<meta property="og:updated_time" content="2024-07-07T07:07:32.156Z">
+<meta property="og:updated_time" content="2024-07-14T08:51:37.314Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="批量下载微信公众号文章（轻量级爬虫，截至2024年有效）">
 <meta name="twitter:description" content="基本的爬虫应该是程序员的必备技能，一方面有实际应用价值，比如批量下载感兴趣的资源，自动关注感兴趣的信息（甚至自动完成抢购等操作），另一方面也能锻炼能力，简单的爬虫覆盖了很多应知应会的基础知识。最近工作中要持续获取不同微信公众号的文章进行资料搜索分析，终于有了足够的动力和机会好好学习并总结。意外惊喜的发现，用Golang来实现这个功能居然这么简洁，再次为Golang生态的优雅风格折服。">
@@ -321,8 +322,8 @@
               
                 <span class="post-meta-item-text">更新于&#58;</span>
               
-              <time title="更新于" itemprop="dateModified" datetime="2024-07-07T15:07:32+08:00">
-                2024-07-07
+              <time title="更新于" itemprop="dateModified" datetime="2024-07-14T16:51:37+08:00">
+                2024-07-14
               </time>
             
           </span>
@@ -386,7 +387,7 @@
 <li>获取文章内容。因为网页是动态加载内容的，所以通过简单发起请求获得返回这样的方式很难获取文章的内容，可借助无头（headless）浏览器模拟人工操作的方式，让程序驱动下的浏览器加载页面，再获取最终加载完成的页面中的文本和图片等内容。</li>
 <li>获取认证信息实现自动化。通过分析无头浏览器的请求，获取其中的cookie和token这些登陆认证后的信息，以便后续发起爬虫请求的时候能带上这些信息通过服务器的认证检查。也因为这个原因，所以每次启动爬虫都要模拟人工操作，手工登陆一下微信公众号平台，还有就是控制爬虫的访问频率，避免触发服务器的反爬虫处理。</li>
 </ol>
-<h1 id="方案"><a href="#方案" class="headerlink" title="方案"></a>方案</h1><p>思路的第一第二点，可以参考知乎上的这篇文章：<a href="https://zhuanlan.zhihu.com/p/596722985" target="_blank" rel="noopener">只需十几行代码，轻松爬取公众号文章！</a><br>思路的第三第四点，可以参考go-rod的<a href="https://go-rod.github.io/i18n/zh-CN/#/network/README?id=%e4%bb%a3%e7%90%86" target="_blank" rel="noopener">说明文档</a><br>完整的golang实现代码可以参考github上的这个项目【TODO】</p>
+<h1 id="方案"><a href="#方案" class="headerlink" title="方案"></a>方案</h1><p>思路的第一第二点，可以参考知乎上的这篇文章：<a href="https://zhuanlan.zhihu.com/p/596722985" target="_blank" rel="noopener">只需十几行代码，轻松爬取公众号文章！</a><br>思路的第三第四点，可以参考go-rod的<a href="https://go-rod.github.io/i18n/zh-CN/#/network/README?id=%e4%bb%a3%e7%90%86" target="_blank" rel="noopener">说明文档</a><br>完整的golang实现代码可以参考我在github上的这个项目：<a href="https://github.com/Kenson321/wechatarticles" target="_blank" rel="noopener">wechatarticles</a></p>
 <h1 id="步骤"><a href="#步骤" class="headerlink" title="步骤"></a>步骤</h1><p>为了体现原创性，下面将从头到尾操作一遍。以下截图使用的是Firefox浏览器，其它浏览器类似。</p>
 <h2 id="一、获取公众号链接入口。"><a href="#一、获取公众号链接入口。" class="headerlink" title="一、获取公众号链接入口。"></a>一、获取公众号链接入口。</h2><ol>
 <li><p>打开<a href="https://mp.weixin.qq.com/" target="_blank" rel="noopener">微信公众号平台网页</a>，注册账号后，扫码登陆。由于必须扫码，所以后续爬虫的每次登陆，都无法避免需要手工扫码操作一次。<br><img src="1.jpg" alt=""></p>
@@ -422,8 +423,9 @@
 <li><p>选择【js_article】元素，鼠标右键，【Copy】，【CSS Selector】，得到【#js_article】，这个值将用于后续代码中获取该元素下的文本内容。<br><img src="11.jpg" alt=""></p>
 </li>
 </ol>
-<p>go-rod十分的简单易用，具体可以看官网上的说明文档，这里就直接上代码了。下面只实现了获取文章的文本内容，图片内容后续再补充【TODO】。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">import (</span><br><span class="line">	&quot;fmt&quot;</span><br><span class="line">	&quot;github.com/go-rod/rod&quot;</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line">func visit(url string) &#123;</span><br><span class="line">	browser := rod.New().MustConnect()</span><br><span class="line">	defer browser.MustClose()</span><br><span class="line"></span><br><span class="line">	page := browser.MustPage(url)</span><br><span class="line">	page.MustWaitStable()</span><br><span class="line"></span><br><span class="line">	el := page.MustElement(&quot;#js_article&quot;)</span><br><span class="line">	fmt.Println(el.MustText())</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>go-rod十分的简单易用，具体可以看官网上的说明文档。下面是代码实现，只获取文章的文本内容，可以看到十分的简洁。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">import (</span><br><span class="line">	&quot;fmt&quot;</span><br><span class="line">	&quot;github.com/go-rod/rod&quot;</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line">func visit(url string) &#123;</span><br><span class="line">	browser := rod.New().MustConnect()</span><br><span class="line">	defer browser.MustClose()</span><br><span class="line"></span><br><span class="line">	page := browser.MustPage(url)</span><br><span class="line">	page.MustWaitStable()</span><br><span class="line"></span><br><span class="line">	el := page.MustElement(&quot;#js_article&quot;)</span><br><span class="line">	fmt.Println(el.MustText())</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
 <p>调用例子：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">func main() &#123;</span><br><span class="line">	visit(&quot;http://mp.weixin.qq.com/s?__biz=MjM5MzA0MTg2MA==&amp;mid=2654480375&amp;idx=1&amp;sn=4cf3fbd3660ebad6bf39e8afcf3255e6&amp;chksm=bd519b5c8a26124a45e389199818de9bcf0a3aeb91ca2e53c07992f8f1d5d7342cee62b426ca#rd&quot;)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>如果需要获取图片，有两种方式：<br>1、保证文字和图片的顺序。通过遍历所有html元素的方式分别获取文字和图片，具体可以参考【wechatarticles】的实现。<br>2、不管顺序，只获取图片。通过xpath获取所有带有图片的页面元素，然后下载这些元素包含的图片。<br>下面简单举例介绍xpath。比如下图中输入【//div[@id=’js_content’]/*】，意思是获取页面中所有id属性值为js_content的div元素下的子元素，可以看到搜索结果为【2/20】，意思是一共有20条满足条件的记录，当前停留在第2条，即下面的第二个【p】元素。<br><img src="11-2.jpg" alt=""></p>
 <h2 id="四、获取认证信息实现自动化。"><a href="#四、获取认证信息实现自动化。" class="headerlink" title="四、获取认证信息实现自动化。"></a>四、获取认证信息实现自动化。</h2><ol start="12">
 <li>为了获取登陆认证后的cookie以及token实现后续程序的自动执行，首先要模拟登陆操作。由于微信要求必须扫描二维码，因此这一步必须手工执行。根据go-rod的说明文档，可以通过在程序执行时，添加【-rod=show,devtools】参数，显示浏览器并进行调试，因此我们可以执行命令：【.\编译后的程序名.exe “-rod=show,devtools”】，进入如下界面。然后通过前面介绍的方法，获得【账户】输入框的元素定位：【#header &gt; div.banner &gt; div &gt; div &gt; div.login__type__container.login__type__container__account &gt; form &gt; div.login_input_panel &gt; div:nth-child(1) &gt; div &gt; span &gt; input】<br><img src="12.jpg" alt=""></li>
 </ol>
