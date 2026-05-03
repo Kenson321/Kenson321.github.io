@@ -1,0 +1,787 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="博客,github pages,hexo,next," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="终于把博客弄好了，所以插一脚分享下经验。当然，这方面的文章有很多，每个人的需求也不一样，有人想傻瓜式最快的速度搭建一个惊艳的博客不求甚解，有人想细致入微，也有人想来个折中。我这篇文章属主要想说明思路，细节的东西直接引用别人现成的就好了。 我的选型：Windows下使用hexo搭建Github Pages">
+<meta name="keywords" content="博客,github pages,hexo,next">
+<meta property="og:type" content="article">
+<meta property="og:title" content="搭建一个自己的博客">
+<meta property="og:url" content="https://kenson321.github.io/2018/09/01/GitHubPages/index.html">
+<meta property="og:site_name" content="Kenson&#39;s Blog">
+<meta property="og:description" content="终于把博客弄好了，所以插一脚分享下经验。当然，这方面的文章有很多，每个人的需求也不一样，有人想傻瓜式最快的速度搭建一个惊艳的博客不求甚解，有人想细致入微，也有人想来个折中。我这篇文章属主要想说明思路，细节的东西直接引用别人现成的就好了。 我的选型：Windows下使用hexo搭建Github Pages">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2026-05-03T10:11:34.607Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="搭建一个自己的博客">
+<meta name="twitter:description" content="终于把博客弄好了，所以插一脚分享下经验。当然，这方面的文章有很多，每个人的需求也不一样，有人想傻瓜式最快的速度搭建一个惊艳的博客不求甚解，有人想细致入微，也有人想来个折中。我这篇文章属主要想说明思路，细节的东西直接引用别人现成的就好了。 我的选型：Windows下使用hexo搭建Github Pages">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://kenson321.github.io/2018/09/01/GitHubPages/"/>
+
+
+
+
+
+  <title>搭建一个自己的博客 | Kenson's Blog</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Kenson's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://kenson321.github.io/2018/09/01/GitHubPages/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Kenson">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/luffy.JPG">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Kenson's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">搭建一个自己的博客</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-09-01T11:52:11+08:00">
+                2018-09-01
+              </time>
+            
+
+            
+              <span class="post-meta-divider">|</span>
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-check-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">更新于&#58;</span>
+              
+              <time title="更新于" itemprop="dateModified" datetime="2026-05-03T18:11:34+08:00">
+                2026-05-03
+              </time>
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Blog/" itemprop="url" rel="index">
+                    <span itemprop="name">Blog</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Blog/github-pages/" itemprop="url" rel="index">
+                    <span itemprop="name">github pages</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>终于把博客弄好了，所以插一脚分享下经验。当然，这方面的文章有很多，每个人的需求也不一样，有人想傻瓜式最快的速度搭建一个惊艳的博客不求甚解，有人想细致入微，也有人想来个折中。我这篇文章属主要想说明思路，细节的东西直接引用别人现成的就好了。</p>
+<p>我的选型：<strong>Windows下使用hexo搭建Github Pages</strong></p>
+<a id="more"></a>
+<h1 id="选型"><a href="#选型" class="headerlink" title="选型"></a>选型</h1><p>首先解决方向问题</p>
+<h2 id="为什么要搭建博客"><a href="#为什么要搭建博客" class="headerlink" title="为什么要搭建博客"></a>为什么要搭建博客</h2><p>看过几篇文章总结的不错的，但是忘了出处了，只能把我比较认同的回忆下来：</p>
+<ul>
+<li>个人简历，看你的博客就知道你的写作水平，知道你做过的事情，甚至看到你做出的成果，我是面试官的话我希望能够看到这些</li>
+<li>自媒体，既然愿意写朋友圈，还不如直接写博客呢，喜欢写多长多短都可以，关键是内容还是自己保存着的</li>
+</ul>
+<h2 id="为什么要选Github-Pages"><a href="#为什么要选Github-Pages" class="headerlink" title="为什么要选Github Pages"></a>为什么要选Github Pages</h2><p>博客曾经很流行啊，后来是微博，再到朋友圈，当然博客也一直没有被替代。我记得我当初还是用msn space，现在又流行这么多网站，而我只想要一个：</p>
+<ul>
+<li>权威的，不要让我再换来换去</li>
+<li>用mark down的，因为我只关注内容不想关注形式<br>github大家都说是全球最大的同性网站，而我又那么喜欢open source，而且它又可以让我只关注内容，甚至还能用git像管理代码那样管理blog，所以我选择了Github Pages。<br>另外github还有几个选择：<a href="https://github.com/rainzhaojy/blogs/issues/1" target="_blank" rel="noopener">利用GitHub写博客的几种方式</a></li>
+</ul>
+<h2 id="使用哪个git客户端工具"><a href="#使用哪个git客户端工具" class="headerlink" title="使用哪个git客户端工具"></a>使用哪个git客户端工具</h2><p>我选择<em>GitExtensions</em>，因为它是一个我们公司在用的，windows平台下的图形化工具，很容易上手。另外它本身也包括了官方的<em>Git for Windows</em>，没有任何入侵，只是一个扩展，也就是我可以两个都用。</p>
+<h2 id="为什么选hexo"><a href="#为什么选hexo" class="headerlink" title="为什么选hexo"></a>为什么选hexo</h2><p><a href="https://www.techiediaries.com/jekyll-hugo-hexo/" target="_blank" rel="noopener">How to Choose the Right Static Generator: Jekyll vs. Hugo vs. Hexo</a><br><a href="https://www.slant.co/versus/1006/1020/~jekyll_vs_hexo" target="_blank" rel="noopener">Jekyll vs Hexo detailed comparison as of 2018</a><br>根据这两篇文章的介绍，毫无疑问，hexo是首选。因为里面列出的hexo唯一的缺点也是我想要的优点：Hexo has a relatively large community but the majority is non-english speakers (from China)。主要使用的都是中国人成了外国人眼中的缺点，哈哈。</p>
+<h2 id="为什么要选nexT主题"><a href="#为什么要选nexT主题" class="headerlink" title="为什么要选nexT主题"></a>为什么要选nexT主题</h2><p>就挑一个简单易用的好了，我真的只在乎内容，形式不求张扬个性。nexT貌似很heat。</p>
+<h1 id="步骤"><a href="#步骤" class="headerlink" title="步骤"></a>步骤</h1><p>实践才是真理。这部分内容网上有很多，而我搭建好博客和写这篇文章的时间相差比较远了，重新回忆有点困难，暂时先写这么多吧。以后写文章一定要趁热打铁。。<br>npm install -g hexo<br>hexo init my-blog<br>cd my-blog<br>npm install<br>npm install hexo-deployer-git –save<br>git clone <a href="https://github.com/iissnan/hexo-theme-next" target="_blank" rel="noopener">https://github.com/iissnan/hexo-theme-next</a> themes/next<br>vim _config.yml<br>hexo clean<br>hexo g<br>hexo d</p>
+<h2 id="申请github-Pages"><a href="#申请github-Pages" class="headerlink" title="申请github Pages"></a>申请github Pages</h2><p>我个人的学习习惯：看官网介绍+别人总结</p>
+<p><a href="https://pages.github.com/" target="_blank" rel="noopener">官网介绍</a><br><a href="https://www.zhihu.com/question/20962496" target="_blank" rel="noopener">别人总结</a></p>
+<h2 id="安装git"><a href="#安装git" class="headerlink" title="安装git"></a>安装git</h2><p><a href="https://www.liaoxuefeng.com/wiki/0013739516305929606dd18361248578c67b8067c8c017b000/00137396287703354d8c6c01c904c7d9ff056ae23da865a000" target="_blank" rel="noopener">安装Git - 廖雪峰的官方网站</a><br><a href="https://blog.csdn.net/shulianghan/article/details/18812279" target="_blank" rel="noopener">GitHub超详细图文攻略</a><br>另外直接google：<em>GitExtensions</em>和<em>Git for Windows</em></p>
+<h2 id="安装hexo"><a href="#安装hexo" class="headerlink" title="安装hexo"></a>安装hexo</h2><p><a href="https://hexo.io/docs/commands" target="_blank" rel="noopener">官网</a><br><a href="https://github.com/peiying/hexo/blob/master/source/_posts/%E6%9C%80%E9%9D%A0%E8%B0%B1%E7%9A%84windows%E4%B8%8B%E6%90%AD%E5%BB%BA%E7%8B%AC%E7%AB%8B%E5%8D%9A%E5%AE%A2GitHub%20Pages%E4%B8%8EHexo%E7%9A%84%E6%95%99%E7%A8%8B.md" target="_blank" rel="noopener">最靠谱的搭建独立博客GitHub Pages与Hexo的教程</a></p>
+<h2 id="安装nexT"><a href="#安装nexT" class="headerlink" title="安装nexT"></a>安装nexT</h2><p><a href="https://theme-next.iissnan.com/getting-started.html" target="_blank" rel="noopener">官网1</a><br><a href="https://github.com/iissnan/hexo-theme-next" target="_blank" rel="noopener">官网2</a></p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/博客/" rel="tag"># 博客</a>
+          
+            <a href="/tags/github-pages/" rel="tag"># github pages</a>
+          
+            <a href="/tags/hexo/" rel="tag"># hexo</a>
+          
+            <a href="/tags/next/" rel="tag"># next</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/09/02/basketBall-shoot/" rel="prev" title="投篮">
+                投篮 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/uploads/luffy.JPG"
+                alt="Kenson" />
+            
+              <p class="site-author-name" itemprop="name">Kenson</p>
+              <p class="site-description motion-element" itemprop="description">灾难总是接踵而至，这正是世间的常理。你以为只要解释一下，就有谁会来救你吗？要是死了，就只能说明我不过是如此程度的男人。——OnePiece-索隆</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">15</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">15</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">30</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#选型"><span class="nav-number">1.</span> <span class="nav-text">选型</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#为什么要搭建博客"><span class="nav-number">1.1.</span> <span class="nav-text">为什么要搭建博客</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#为什么要选Github-Pages"><span class="nav-number">1.2.</span> <span class="nav-text">为什么要选Github Pages</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#使用哪个git客户端工具"><span class="nav-number">1.3.</span> <span class="nav-text">使用哪个git客户端工具</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#为什么选hexo"><span class="nav-number">1.4.</span> <span class="nav-text">为什么选hexo</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#为什么要选nexT主题"><span class="nav-number">1.5.</span> <span class="nav-text">为什么要选nexT主题</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#步骤"><span class="nav-number">2.</span> <span class="nav-text">步骤</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#申请github-Pages"><span class="nav-number">2.1.</span> <span class="nav-text">申请github Pages</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#安装git"><span class="nav-number">2.2.</span> <span class="nav-text">安装git</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#安装hexo"><span class="nav-number">2.3.</span> <span class="nav-text">安装hexo</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#安装nexT"><span class="nav-number">2.4.</span> <span class="nav-text">安装nexT</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2018 &mdash; <span itemprop="copyrightYear">2026</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Kenson</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Muse</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

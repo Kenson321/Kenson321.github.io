@@ -1,0 +1,786 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="TCC,两阶段事务,柔性事务," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="两年前从微服务转型到区块链，欠下一篇当时对二阶段事务顿悟的文章，今天填坑。">
+<meta name="keywords" content="TCC,两阶段事务,柔性事务">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Try Confirm Recover">
+<meta property="og:url" content="https://kenson321.github.io/2022/08/20/TCR/index.html">
+<meta property="og:site_name" content="Kenson&#39;s Blog">
+<meta property="og:description" content="两年前从微服务转型到区块链，欠下一篇当时对二阶段事务顿悟的文章，今天填坑。">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://kenson321.github.io/2022/08/20/TCR/TCR.png">
+<meta property="og:updated_time" content="2026-05-03T09:57:47.095Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Try Confirm Recover">
+<meta name="twitter:description" content="两年前从微服务转型到区块链，欠下一篇当时对二阶段事务顿悟的文章，今天填坑。">
+<meta name="twitter:image" content="https://kenson321.github.io/2022/08/20/TCR/TCR.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://kenson321.github.io/2022/08/20/TCR/"/>
+
+
+
+
+
+  <title>Try Confirm Recover | Kenson's Blog</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Kenson's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://kenson321.github.io/2022/08/20/TCR/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Kenson">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/luffy.JPG">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Kenson's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Try Confirm Recover</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2022-08-20T16:36:30+08:00">
+                2022-08-20
+              </time>
+            
+
+            
+              <span class="post-meta-divider">|</span>
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-check-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">更新于&#58;</span>
+              
+              <time title="更新于" itemprop="dateModified" datetime="2026-05-03T17:57:47+08:00">
+                2026-05-03
+              </time>
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/感悟/" itemprop="url" rel="index">
+                    <span itemprop="name">感悟</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/感悟/技术/" itemprop="url" rel="index">
+                    <span itemprop="name">技术</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>两年前从微服务转型到区块链，欠下一篇当时对二阶段事务顿悟的文章，今天填坑。<br><a id="more"></a></p>
+<h1 id="缘起"><a href="#缘起" class="headerlink" title="缘起"></a>缘起</h1><p>  2016年转型做微服务，当时在我至今唯一承认的一位真正意义上的工作上的导师带领下，首先接触研究的是两阶段事务，或称为柔性事务，当时他起了个名字：TCR（Try、Confirm、Recover）。研究的材料主要基于阿里2008年和2010年的PPT，里面介绍了4种类型：TCC（Try Confirm Cancel），补偿型，可靠消息型，非可靠消息型。<br>  2020年转型做区块链，也就是直到那一刻，才突然想透了这4种类型的关系，特别是后面两种，可靠消息型、非可靠消息型，一直被忽视了。</p>
+<h1 id="Try-Confirm-Recover"><a href="#Try-Confirm-Recover" class="headerlink" title="Try Confirm Recover"></a>Try Confirm Recover</h1><p>  分布式事务一致性4种交易类型，一句话概括：<strong>一个交易，两个阶段T/CR，三种操作T（ry）、C（onfirm）、R（ecover），四种组合TCR（TCC）、TR（补偿）、TC（可靠消息）、C(R)（非可靠消息）。</strong></p>
+<p><img src="TCR.png" alt=""></p>
+<h2 id="TCR"><a href="#TCR" class="headerlink" title="TCR"></a>TCR</h2><p>  TCC型，就是包含三个操作的TCR型，网上的资料较多，而且这个一直是重点讨论的对象，本文暂时先不展开，关键在于：</p>
+<ol>
+<li>T阶段是锁资源</li>
+<li>C、R阶段要支持幂等</li>
+</ol>
+<h2 id="TR"><a href="#TR" class="headerlink" title="TR"></a>TR</h2><p>  补偿型，就是只包含两个操作的TR型，T负责正交易，R负责反交易或冲正，这种模式网上的资料也有不少，而且比较容易理解，本文暂时也先不展开，关键在于：</p>
+<ol>
+<li>高并发会导致R阶段失败的可能性不能被忽略</li>
+<li>R阶段要支持幂等</li>
+</ol>
+<h2 id="TC"><a href="#TC" class="headerlink" title="TC"></a>TC</h2><p>  可靠消息/异步确保型，就是只包含两个操作的TC型。这个是较少讨论的，这里重点展开介绍一下。<br>  首先不要被这里的“消息”一词迷惑，以为一定要用什么消息中间件，也不要被具体的实现方案迷惑，其核心我认为就是TC型，至于怎么做到都可以。<br>  最简单容易理解的方案，就是T阶段在数据库中记下一条记录，与T阶段要更新的其它数据一起commit，保证一致性。而在C阶段，则根据之前的这条记录完成剩余的动作。</p>
+<p>  按着这个方案，回到上面的几个名词，分别解释一下：<br>  可靠：首先可靠是因为T阶段记表了，持久化了，所以可靠。另外为了实现可靠，也就是保证C阶段一定能完成，可以通过异步进程去定期扫描数据库，把未成功处理的内容重新发起，因此这里C阶段也要支持幂等。<br>  消息：一般这种模式叫做消息，用于通知下一个模块处理，用消息中间件之类的也比较常见，但绝对不要因此被迷惑了<br>  异步：通知消息是异步的一种常见方式，上面说的异步进程去定期扫描数据库，也是必须要有的一个异步手段<br>  确保：与可靠一个含义</p>
+<h2 id="C-R"><a href="#C-R" class="headerlink" title="C(R)"></a>C(R)</h2><p>  非可靠消息/最大努力通知型，就是只包含两个操作的C(R)型。这个也是较少讨论的，这里重点展开介绍一下。<br>  其实更确切的说，C(R)型只包含一个操作C，因为前面没有Try，因此也就不可能需要Recover。既然只有一个操作Confirm，那跟只有Try的差别就是，只有Try就是普通的一阶段交易了，这里说的是两阶段，所以必须是第二阶段的Confirm，因此这个服务通常是被别人调用，并且在别人一阶段处理的时候，这个服务什么都不做，直到第二阶段才处理。</p>
+<p>  按着这个思路，回到上面的几个名词，分别解释一下：<br>  非可靠：与可靠相呼应，因为没有Try阶段的记表，所以C阶段的处理失败了是没有异步进程去重试的，所以不可靠。<br>  消息：这里更加不可能涉及什么消息中间件，只能理解为一阶段的时候被调用了，被一个消息通知了。也有解释说这通常是发了一个短信之类的消息的操作，这种解释应该是误解了，现象可能是这样，但是原理绝对不能这么解释。<br>  最大努力：与非可靠意思一样，就是说通过最大努力的尝试，但是不一定可靠。这里甚至都没有重试的基础，因为在一阶段没有记表。<br>  通知：与消息一个含义。千万也不要曲解了，以为这是尽最大努力（比如重试n次）去发送一个通知消息（比如短信）之类的意思。</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/TCC/" rel="tag"># TCC</a>
+          
+            <a href="/tags/两阶段事务/" rel="tag"># 两阶段事务</a>
+          
+            <a href="/tags/柔性事务/" rel="tag"># 柔性事务</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2022/08/07/鹰啄十式/" rel="next" title="鹰啄十式">
+                <i class="fa fa-chevron-left"></i> 鹰啄十式
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2023/02/05/golang-wasm-介绍/" rel="prev" title="Golang与WASM">
+                Golang与WASM <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/uploads/luffy.JPG"
+                alt="Kenson" />
+            
+              <p class="site-author-name" itemprop="name">Kenson</p>
+              <p class="site-description motion-element" itemprop="description">灾难总是接踵而至，这正是世间的常理。你以为只要解释一下，就有谁会来救你吗？要是死了，就只能说明我不过是如此程度的男人。——OnePiece-索隆</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">15</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">15</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">30</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#缘起"><span class="nav-number">1.</span> <span class="nav-text">缘起</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Try-Confirm-Recover"><span class="nav-number">2.</span> <span class="nav-text">Try Confirm Recover</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#TCR"><span class="nav-number">2.1.</span> <span class="nav-text">TCR</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#TR"><span class="nav-number">2.2.</span> <span class="nav-text">TR</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#TC"><span class="nav-number">2.3.</span> <span class="nav-text">TC</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#C-R"><span class="nav-number">2.4.</span> <span class="nav-text">C(R)</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2018 &mdash; <span itemprop="copyrightYear">2026</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Kenson</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Muse</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
