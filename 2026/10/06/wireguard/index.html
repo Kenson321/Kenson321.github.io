@@ -88,7 +88,7 @@
 <meta property="og:description" content="WireGuard一直在我的TODO清单内，最近在AI AGENT的指导下很快就搭建起来了。AI时代，写博客的价值可能在于真实，简洁。">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="https://kenson321.github.io/2026/10/06/wireguard/1.jpg">
-<meta property="og:updated_time" content="2026-10-06T18:12:33.239Z">
+<meta property="og:updated_time" content="2026-10-06T18:53:44.939Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="WireGuard的原理与使用简介">
 <meta name="twitter:description" content="WireGuard一直在我的TODO清单内，最近在AI AGENT的指导下很快就搭建起来了。AI时代，写博客的价值可能在于真实，简洁。">
@@ -310,7 +310,7 @@
               
                 <span class="post-meta-item-text">更新于&#58;</span>
               
-              <time title="更新于" itemprop="dateModified" datetime="2026-10-07T02:12:33+08:00">
+              <time title="更新于" itemprop="dateModified" datetime="2026-10-07T02:53:44+08:00">
                 2026-10-07
               </time>
             
@@ -399,9 +399,9 @@
 </ol>
 <p>在服务器B上ping服务器A<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ping 10.0.0.1</span><br></pre></td></tr></table></figure></p>
 <p>通过上面操作，由服务器A和服务器B组成的VPN网络就搭建起来了，从配置可见，服务器A和服务器B并没有太大差异。</p>
-<h3 id="代理"><a href="#代理" class="headerlink" title="代理"></a>代理</h3><p>当使用wireguard做代理时，可以参考这个介绍：<br>：<a href="https://wiki.alpinelinux.cn/wiki/Configure_a_Wireguard_interface_(wg\" target="_blank" rel="noopener">代理</a>)<br>在代理模式下，配置就有明显的服务器、客户端的差异区分了。</p>
+<h3 id="代理"><a href="#代理" class="headerlink" title="代理"></a>代理</h3><p>当使用wireguard做代理时，可以参考这个介绍： <a href="https://wiki.alpinelinux.cn/wiki/Configure_a_Wireguard_interface_(wg)" target="_blank" rel="noopener">https://wiki.alpinelinux.cn/wiki/Configure_a_Wireguard_interface_(wg)</a><br>在代理模式下，配置就有明显的服务器、客户端的差异区分了。</p>
 <ol>
-<li>修改客户端路由<br>前面说过，增加了虚拟网络接口后，要把网络流量路由到新的这个网络接口才有效。<br>实际上，前面服务器A的wg-quick up wg0操作背后，其实就运行了ip route add 10.0.0.2/32 dev wg0操作，把发往10.0.0.2地址的流量转到wg0网络接口。<br>为了把所有流量都发往代理服务器B，服务器A对服务器B的AllowedIPs可以设置为0.0.0.0/0，而不是10.0.0.2/32。这样，服务器A内，发往任意目标IP的报文都会发到wg0网络接口。同时，任意源IP的报文都会允许通过服务器B进来。<br>参考官网文档的原文描述：<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">In the case of a WireGuard peer who wishes to route all traffic through another WireGuard peer, the cryptokey routing table could be configured more simply as:</span><br><span class="line">Configuration 2a</span><br><span class="line">| Interface Public Key | Interface Private Key | Listening UDP Port |</span><br><span class="line">| -- | -- | -- |</span><br><span class="line">|gN65...z6EA | gI6E...fWGE | 21841 |</span><br><span class="line"></span><br><span class="line">|Peer Public Key | Allowed Source IPs |</span><br><span class="line">| -- | -- |</span><br><span class="line">|HIgo...8ykw | 0.0.0.0/0 |</span><br><span class="line">Here, the peer authorizes HIgo...f8yk to put packets onto wg0 with any source IP, and all packets that are outgoing on wg0 will be encrypted using the secure session associated with that public key and sent to that peer’s endpoint.</span><br></pre></td></tr></table></figure>
+<li>修改客户端路由<br>前面说过，增加了虚拟网络接口后，要把网络流量路由到新的这个网络接口才有效。<br>实际上，前面服务器A的wg-quick up wg0操作背后，其实就运行了ip route add 10.0.0.2/32 dev wg0操作，把发往10.0.0.2地址的流量转到wg0网络接口。<br>为了把所有流量都发往代理服务器B，服务器A对服务器B的AllowedIPs可以设置为0.0.0.0/0，而不是10.0.0.2/32。这样，服务器A内，发往任意目标IP的报文都会发到wg0网络接口。同时，任意源IP的报文都会允许通过服务器B进来。<br>参考官网文档的原文描述：<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">In the case of a WireGuard peer who wishes to route all traffic through another WireGuard peer, the cryptokey routing table could be configured more simply as:</span><br><span class="line">Configuration 2a</span><br><span class="line">| Interface Public Key | Interface Private Key | Listening UDP Port |</span><br><span class="line">|gN65...z6EA | gI6E...fWGE | 21841 |</span><br><span class="line">|Peer Public Key | Allowed Source IPs |</span><br><span class="line">|HIgo...8ykw | 0.0.0.0/0 |</span><br><span class="line">Here, the peer authorizes HIgo...f8yk to put packets onto wg0 with any source IP, and all packets that are outgoing on wg0 will be encrypted using the secure session associated with that public key and sent to that peer’s endpoint.</span><br></pre></td></tr></table></figure>
 </li>
 </ol>
 <p>如果不是用wg-quick up操作的，可以参考如下命令行：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">ip route show default # 查询原来的默认路由</span><br><span class="line">#default via 192.168.0.1 dev enp0s25 proto dhcp metric 100</span><br><span class="line">sudo ip route del default # 删掉原来的默认路由</span><br><span class="line">sudo ip route add 182.255.74.22/32 via 192.168.0.1 dev enp0s25 # 服务器B的真实IP还走原来的物理网络接口路由</span><br><span class="line">sudo ip route add default via 10.0.0.1 dev wg0 # 其它的报文都走虚拟网络接口路由</span><br><span class="line">echo &quot;nameserver 8.8.8.8&quot; | sudo tee /etc/resolv.conf # 使用固定的域名查询，避免流转转发之后引发的域名查询失败</span><br></pre></td></tr></table></figure></p>
