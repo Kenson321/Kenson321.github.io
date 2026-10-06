@@ -88,7 +88,7 @@
 <meta property="og:description" content="WireGuard一直在我的TODO清单内，最近在AI AGENT的指导下很快就搭建起来了。AI时代，写博客的价值可能在于真实，简洁。">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="https://kenson321.github.io/2026/10/06/wireguard/1.jpg">
-<meta property="og:updated_time" content="2026-10-06T18:53:44.939Z">
+<meta property="og:updated_time" content="2026-10-06T19:13:02.307Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="WireGuard的原理与使用简介">
 <meta name="twitter:description" content="WireGuard一直在我的TODO清单内，最近在AI AGENT的指导下很快就搭建起来了。AI时代，写博客的价值可能在于真实，简洁。">
@@ -310,7 +310,7 @@
               
                 <span class="post-meta-item-text">更新于&#58;</span>
               
-              <time title="更新于" itemprop="dateModified" datetime="2026-10-07T02:53:44+08:00">
+              <time title="更新于" itemprop="dateModified" datetime="2026-10-07T03:13:02+08:00">
                 2026-10-07
               </time>
             
@@ -368,7 +368,7 @@
       
         <p>WireGuard一直在我的TODO清单内，最近在AI AGENT的指导下很快就搭建起来了。AI时代，写博客的价值可能在于真实，简洁。</p>
 <a id="more"></a>
-<h1 id="使用体验"><a href="#使用体验" class="headerlink" title="使用体验"></a>使用体验</h1><p>先分享一下个人感受，一如linux生态的哲学理念，WireGuard简洁高效，很有程序员的风格（不考虑提升复杂度的易用性——程序员大多可以忍受能力范围内的不易用，但对优雅的解决问题有洁癖，喜欢分而治之、解耦），使用之后能对原理有更深入的理解。<br>相对的，对于非程序员用户，特别是那些只想快速使用不想折腾的用户，就不一定那么讨喜了，因为并非开箱即用对用户友好。</p>
+<h1 id="使用体验"><a href="#使用体验" class="headerlink" title="使用体验"></a>使用体验</h1><p>先分享一下个人感受，一如linux生态的哲学理念，WireGuard简洁高效，很有程序员的风格（不考虑提升复杂度的易用性——程序员大多可以忍受能力范围内的不易用，但对优雅的解决问题有洁癖，喜欢分而治之、解耦），使用之后能对原理有更深入的理解（作为程序员，我一直觉得，学编译原理就应该学gcc怎么用，学网络编程也应该学习一下像wireguard这样的工具，比啃书有趣有意义多了）。<br>相对的，对于非程序员用户，特别是那些只想快速使用不想折腾的用户，就不一定那么讨喜了，因为并非开箱即用对用户友好。</p>
 <h1 id="原理"><a href="#原理" class="headerlink" title="原理"></a>原理</h1><h2 id="VPN"><a href="#VPN" class="headerlink" title="VPN"></a>VPN</h2><p>首先需要说明的是，WireGuard的定位是虚拟专用网络VPN（Virtual Private Network）技术，为的是让多个节点在一个虚拟的专用安全的网络中通讯，不是用于代理，理解这一点对后面理解WireGuard的配置方式很重要。<br>可能是因为中文互联网环境中主要把WireGuard用于代理访问外部网络，又由于wireguard真的很安全，才导致WireGuard变得敏感。同时也会导致第一次使用的时候产生误会，总觉得应该会是类似服务器-客户端的模式，实际上，WireGurad的网络配置更像一个去中心化的点对点通讯模式。</p>
 <h2 id="实现原理"><a href="#实现原理" class="headerlink" title="实现原理"></a>实现原理</h2><p>实际上，官网有一个很详细的介绍：<a href="https://wireguard.com/papers/wireguard.pdf" target="_blank" rel="noopener">官方文档</a></p>
 <p>这里，一图胜千言：<br><img src="1.jpg" alt=""></p>
