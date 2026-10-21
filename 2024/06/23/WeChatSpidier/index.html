@@ -82,7 +82,7 @@
 <meta name="description" content="基本的爬虫应该是程序员的必备技能，一方面有实际应用价值，比如批量下载感兴趣的资源，自动关注感兴趣的信息（甚至自动完成抢购等操作），另一方面也能锻炼能力，简单的爬虫覆盖了很多应知应会的基础知识。最近工作中要持续获取不同微信公众号的文章进行资料搜索分析，终于有了足够的动力和机会好好学习并总结。意外惊喜的发现，用Golang来实现这个功能居然这么简洁，再次为Golang生态的优雅风格折服。">
 <meta name="keywords" content="爬虫,微信公众号">
 <meta property="og:type" content="article">
-<meta property="og:title" content="批量下载微信公众号文章（轻量级爬虫，截至2024年有效）">
+<meta property="og:title" content="批量下载微信公众号文章（轻量级爬虫，截至2026年7月有效）">
 <meta property="og:url" content="https://kenson321.github.io/2024/06/23/WeChatSpidier/index.html">
 <meta property="og:site_name" content="Kenson&#39;s Blog">
 <meta property="og:description" content="基本的爬虫应该是程序员的必备技能，一方面有实际应用价值，比如批量下载感兴趣的资源，自动关注感兴趣的信息（甚至自动完成抢购等操作），另一方面也能锻炼能力，简单的爬虫覆盖了很多应知应会的基础知识。最近工作中要持续获取不同微信公众号的文章进行资料搜索分析，终于有了足够的动力和机会好好学习并总结。意外惊喜的发现，用Golang来实现这个功能居然这么简洁，再次为Golang生态的优雅风格折服。">
@@ -100,9 +100,9 @@
 <meta property="og:image" content="https://kenson321.github.io/2024/06/23/WeChatSpidier/11.jpg">
 <meta property="og:image" content="https://kenson321.github.io/2024/06/23/WeChatSpidier/11-2.jpg">
 <meta property="og:image" content="https://kenson321.github.io/2024/06/23/WeChatSpidier/12.jpg">
-<meta property="og:updated_time" content="2026-05-03T09:57:47.095Z">
+<meta property="og:updated_time" content="2026-10-21T14:26:21.555Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="批量下载微信公众号文章（轻量级爬虫，截至2024年有效）">
+<meta name="twitter:title" content="批量下载微信公众号文章（轻量级爬虫，截至2026年7月有效）">
 <meta name="twitter:description" content="基本的爬虫应该是程序员的必备技能，一方面有实际应用价值，比如批量下载感兴趣的资源，自动关注感兴趣的信息（甚至自动完成抢购等操作），另一方面也能锻炼能力，简单的爬虫覆盖了很多应知应会的基础知识。最近工作中要持续获取不同微信公众号的文章进行资料搜索分析，终于有了足够的动力和机会好好学习并总结。意外惊喜的发现，用Golang来实现这个功能居然这么简洁，再次为Golang生态的优雅风格折服。">
 <meta name="twitter:image" content="https://kenson321.github.io/2024/06/23/WeChatSpidier/1.jpg">
 
@@ -140,7 +140,7 @@
 
 
 
-  <title>批量下载微信公众号文章（轻量级爬虫，截至2024年有效） | Kenson's Blog</title>
+  <title>批量下载微信公众号文章（轻量级爬虫，截至2026年7月有效） | Kenson's Blog</title>
   
 
 
@@ -294,7 +294,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">批量下载微信公众号文章（轻量级爬虫，截至2024年有效）</h1>
+          <h1 class="post-title" itemprop="name headline">批量下载微信公众号文章（轻量级爬虫，截至2026年7月有效）</h1>
         
 
         <div class="post-meta">
@@ -322,8 +322,8 @@
               
                 <span class="post-meta-item-text">更新于&#58;</span>
               
-              <time title="更新于" itemprop="dateModified" datetime="2026-05-03T17:57:47+08:00">
-                2026-05-03
+              <time title="更新于" itemprop="dateModified" datetime="2026-10-21T22:26:21+08:00">
+                2026-10-21
               </time>
             
           </span>
@@ -380,6 +380,7 @@
       
         <p>基本的爬虫应该是程序员的必备技能，一方面有实际应用价值，比如批量下载感兴趣的资源，自动关注感兴趣的信息（甚至自动完成抢购等操作），另一方面也能锻炼能力，简单的爬虫覆盖了很多应知应会的基础知识。<br>最近工作中要持续获取不同微信公众号的文章进行资料搜索分析，终于有了足够的动力和机会好好学习并总结。意外惊喜的发现，用Golang来实现这个功能居然这么简洁，再次为Golang生态的优雅风格折服。</p>
 <a id="more"></a>
+<h1 id="更新"><a href="#更新" class="headerlink" title="更新"></a>更新</h1><p>2026年7月底，微信关掉了公众号平台后台的跨账号查询接口，这篇文章介绍的方法已失效，最新的方法参考最新的一篇文章：TODO。</p>
 <h1 id="思路"><a href="#思路" class="headerlink" title="思路"></a>思路</h1><p>参考了网上的文章，最后实现的思路可以概括为4点：</p>
 <ol>
 <li>获取公众号链接入口。既然是爬虫，那必须得有网页的入口，所以网上给出的思路大多指向通过自己申请一个公众号，然后用公众号账号进入微信的公众号平台进行网页操作，通过分析网页请求获得链接入口。</li>
@@ -562,7 +563,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">17</span>
+                  <span class="site-state-item-count">18</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -584,7 +585,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">33</span>
+                  <span class="site-state-item-count">35</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
@@ -617,7 +618,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#思路"><span class="nav-number">1.</span> <span class="nav-text">思路</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#方案"><span class="nav-number">2.</span> <span class="nav-text">方案</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#步骤"><span class="nav-number">3.</span> <span class="nav-text">步骤</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#一、获取公众号链接入口。"><span class="nav-number">3.1.</span> <span class="nav-text">一、获取公众号链接入口。</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#二、获取公众号文章链接列表。"><span class="nav-number">3.2.</span> <span class="nav-text">二、获取公众号文章链接列表。</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#三、获取文章内容。"><span class="nav-number">3.3.</span> <span class="nav-text">三、获取文章内容。</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#四、获取认证信息实现自动化。"><span class="nav-number">3.4.</span> <span class="nav-text">四、获取认证信息实现自动化。</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#总结"><span class="nav-number">4.</span> <span class="nav-text">总结</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#更新"><span class="nav-number">1.</span> <span class="nav-text">更新</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#思路"><span class="nav-number">2.</span> <span class="nav-text">思路</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#方案"><span class="nav-number">3.</span> <span class="nav-text">方案</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#步骤"><span class="nav-number">4.</span> <span class="nav-text">步骤</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#一、获取公众号链接入口。"><span class="nav-number">4.1.</span> <span class="nav-text">一、获取公众号链接入口。</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#二、获取公众号文章链接列表。"><span class="nav-number">4.2.</span> <span class="nav-text">二、获取公众号文章链接列表。</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#三、获取文章内容。"><span class="nav-number">4.3.</span> <span class="nav-text">三、获取文章内容。</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#四、获取认证信息实现自动化。"><span class="nav-number">4.4.</span> <span class="nav-text">四、获取认证信息实现自动化。</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#总结"><span class="nav-number">5.</span> <span class="nav-text">总结</span></a></li></ol></div>
             
 
           </div>
