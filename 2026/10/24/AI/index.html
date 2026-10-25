@@ -1,0 +1,771 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Opencode,Ollama," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="年初的时候，一直对AI有种观望情绪，因为没想好到底应该怎么应对AI。把所有活都交给AI，AI会让人变懒，AI要收费，AI是被少数大厂控制的，把赖以生存的生产工具交出去后，我们还剩什么？直到。。  直到用过了 Opencode 和 Ollama，我冲向AI。">
+<meta name="keywords" content="Opencode,Ollama">
+<meta property="og:type" content="article">
+<meta property="og:title" content="AI入门(Opencode &amp; Ollama)">
+<meta property="og:url" content="https://kenson321.github.io/2026/10/24/AI/index.html">
+<meta property="og:site_name" content="Kenson&#39;s Blog">
+<meta property="og:description" content="年初的时候，一直对AI有种观望情绪，因为没想好到底应该怎么应对AI。把所有活都交给AI，AI会让人变懒，AI要收费，AI是被少数大厂控制的，把赖以生存的生产工具交出去后，我们还剩什么？直到。。  直到用过了 Opencode 和 Ollama，我冲向AI。">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2026-10-25T11:12:47.466Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="AI入门(Opencode &amp; Ollama)">
+<meta name="twitter:description" content="年初的时候，一直对AI有种观望情绪，因为没想好到底应该怎么应对AI。把所有活都交给AI，AI会让人变懒，AI要收费，AI是被少数大厂控制的，把赖以生存的生产工具交出去后，我们还剩什么？直到。。  直到用过了 Opencode 和 Ollama，我冲向AI。">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://kenson321.github.io/2026/10/24/AI/"/>
+
+
+
+
+
+  <title>AI入门(Opencode & Ollama) | Kenson's Blog</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Kenson's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://kenson321.github.io/2026/10/24/AI/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Kenson">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/luffy.JPG">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Kenson's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">AI入门(Opencode & Ollama)</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2026-10-24T15:19:04+08:00">
+                2026-10-24
+              </time>
+            
+
+            
+              <span class="post-meta-divider">|</span>
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-check-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">更新于&#58;</span>
+              
+              <time title="更新于" itemprop="dateModified" datetime="2026-10-25T19:12:47+08:00">
+                2026-10-25
+              </time>
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/技术/" itemprop="url" rel="index">
+                    <span itemprop="name">技术</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>  年初的时候，一直对AI有种观望情绪，因为没想好到底应该怎么应对AI。把所有活都交给AI，AI会让人变懒，AI要收费，AI是被少数大厂控制的，把赖以生存的生产工具交出去后，我们还剩什么？直到。。<br>  直到用过了 Opencode 和 Ollama，我冲向AI。</p>
+<a id="more"></a>
+<h1 id="对AI的定位"><a href="#对AI的定位" class="headerlink" title="对AI的定位"></a>对AI的定位</h1><ul>
+<li><p>AI是老师，是实习生，但绝不是决策者，替代者，关键时刻得自己上手干。</p>
+<p>一人一公司。<br>AI让每个人都能成为Boss，成为超级个体，但AI必须只能是员工，可能是个优秀员工，也可能是个一般员工，但就是个员工，这个定位要清晰。绝不能出现AI是大脑，AI说什么就是什么，个人变成无脑的 CTRL C 和 CTRL V。想明白这一点，就知道每个活应该如何让AI去干了。<br>既然人依然是老板，那么AI就是个人能力的放大器，就怕你想不到，没有做不到。就比如你如果没想过做火箭，有了AI你也不会做火箭，而有了AI有可能让原来想做而做不出火箭的人做出火箭。</p>
+<p>AI是个全科老师，也是个会出错的老师。<br>AI继搜索引擎之后进一步消除了信息差，让人人都能轻易学到以前难以学到的知识。但就像西方国家鼓励学生挑战老师一样，我们仍然要保留挑战权威的独立思考能力，老师也会出错，AI是老师不是上帝。更重要的是，我们要利用好这个老师，持续学习成长，就像有了机器人我们仍然健身，有了AI，我们仍然要锻炼自己的思维。</p>
+</li>
+</ul>
+<blockquote>
+<p>绝对不要把学习能力、分析能力、思考能力丢弃了，不然就会丧失个人的独立意识，成为一个没有思想的人。人与动物的差别是学会使用工具，使用工具的背后是思考能力，不要让AI把人重新变为动物。<br>就像计算器，自从中考允许用计算器，大家都用计算器计数，丢弃了各种计算的技巧，大学毕业的出来吃个饭算钱都要拿起手机上的计算器，而菜市场的大妈算数却能脱口而出。</p>
+</blockquote>
+<h1 id="对AI的使用"><a href="#对AI的使用" class="headerlink" title="对AI的使用"></a>对AI的使用</h1><ul>
+<li><p>拥有自己的AI。</p>
+<p>如同超级电脑和个人电脑，假如有一天大厂漫天要价甚至收回AI的使用权（当未来的AI接近今天的神，当大厂不缺钱而缺智慧），Opencode和Ollama就是取代超级计算机走向普通百姓家的个人PC。</p>
+<p>普通AI的核心能力是理解能力，超级AI是更强的理解能力+RAG+SKILL+MCP+……，除了理解能力以外的东西都可以用现有的技术自己去补，做成专用的AI工具。</p>
+</li>
+</ul>
+<h2 id="Opencode"><a href="#Opencode" class="headerlink" title="Opencode"></a>Opencode</h2><p>  Opencode的核心价值是可以对接所有模型。这样我们就能用自己的模型，或用任意一个友好的大厂的模型了，不在一棵树上吊死是能活下去的红线。<br>  Opencode的核心作用是Harness，让理解能力一般的AI模型的输出也能赶上超级AI模型。这样我们就不用过度担心模型的能力了，普通低级任务能永远放手给AI Agent完成，不在一棵树上吊死是能活下去的红线。</p>
+<p>  Opencode是一个AI Agent，大脑是背后的大模型，Harness是眼睛和手脚，让AI既能查也能做，怎么查和怎么做是我们利用传统工具和技术能赋予AI的，这样就让非AI专业的程序员有了切入口。背后，实际一切依然是问答，或者说是交互，跟人一样，不断执行大脑的命令和把反馈告诉大脑，决定下一步怎么做。</p>
+<h2 id="Ollama"><a href="#Ollama" class="headerlink" title="Ollama"></a>Ollama</h2><p>  Ollama的核心价值是可以自己部署开源模型。这样我们就能用自己的模型，结合Harness，去利用大模型的理解能力，然后加上传统的技术能力，去做一些以前因为缺乏具备理解能力的技术而无法做的一些工具和能力了。</p>
+<p>  个人PC让普通人都能使用和学习计算机技术，而Ollama和Opencode就是AI时代的个人PC，让普通程序员也有了使用和学习AI技术的抓手。</p>
+<p>  这是开篇，先把定位和意义说清楚，后面的章节，接着分享AI学习过程中的心得体会和技巧。</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Opencode/" rel="tag"># Opencode</a>
+          
+            <a href="/tags/Ollama/" rel="tag"># Ollama</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2026/10/18/WeChatSpidier2026/" rel="next" title="批量下载微信公众号文章II（轻量级爬虫，截至2026年10月有效）">
+                <i class="fa fa-chevron-left"></i> 批量下载微信公众号文章II（轻量级爬虫，截至2026年10月有效）
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/uploads/luffy.JPG"
+                alt="Kenson" />
+            
+              <p class="site-author-name" itemprop="name">Kenson</p>
+              <p class="site-description motion-element" itemprop="description">灾难总是接踵而至，这正是世间的常理。你以为只要解释一下，就有谁会来救你吗？要是死了，就只能说明我不过是如此程度的男人。——OnePiece-索隆</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">19</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">16</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">37</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#对AI的定位"><span class="nav-number">1.</span> <span class="nav-text">对AI的定位</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#对AI的使用"><span class="nav-number">2.</span> <span class="nav-text">对AI的使用</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Opencode"><span class="nav-number">2.1.</span> <span class="nav-text">Opencode</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Ollama"><span class="nav-number">2.2.</span> <span class="nav-text">Ollama</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2018 &mdash; <span itemprop="copyrightYear">2026</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Kenson</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Muse</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
